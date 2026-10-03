@@ -7,7 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/Hidden_One/basic5.PNG" id="5_gdk6b"]
 [ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/Hidden_One/basic_dead.PNG" id="6_4udgl"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_jf4n2"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f5nti"]
+size = Vector2(1217.5, 1554)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f5nti"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -33,13 +36,17 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("6_4udgl")
 }],
-"loop": 1,
+"loop": 0,
 "name": &"dead",
 "speed": 5.0
 }]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" unique_id=566776032]
-sprite_frames = SubResource("SpriteFrames_jf4n2")
+[node name="Area2D" type="Area2D" unique_id=1927082256]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=657838023]
+position = Vector2(-18.75, 4)
+shape = SubResource("RectangleShape2D_f5nti")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1431091116]
+sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-frame = 4
-frame_progress = 1.0
