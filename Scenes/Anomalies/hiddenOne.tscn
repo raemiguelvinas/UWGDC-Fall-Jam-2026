@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://cfmwbxlfxcpc2"]
+
+[ext_resource type="Texture2D" uid="uid://dhlkbmpbruvf6" path="res://Assets/Sprites/Anomalies/Hidden_One/basic1.PNG" id="1_hvpey"]
+[ext_resource type="Texture2D" uid="uid://bk74elb3ksu5d" path="res://Assets/Sprites/Anomalies/Hidden_One/basic2.PNG" id="2_0ydpp"]
+[ext_resource type="Texture2D" uid="uid://dyjsto0r4seuy" path="res://Assets/Sprites/Anomalies/Hidden_One/basic3.PNG" id="3_shoxj"]
+[ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/Hidden_One/basic4.PNG" id="4_oybw7"]
+[ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/Hidden_One/basic5.PNG" id="5_gdk6b"]
+[ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/Hidden_One/basic_dead.PNG" id="6_4udgl"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jf4n2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hvpey")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_0ydpp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_shoxj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_oybw7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gdk6b")
+}],
+"loop": 0,
+"name": &"breath",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_4udgl")
+}],
+"loop": 1,
+"name": &"dead",
+"speed": 5.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" unique_id=566776032]
+sprite_frames = SubResource("SpriteFrames_jf4n2")
+animation = &"breath"
+frame = 4
+frame_progress = 1.0
