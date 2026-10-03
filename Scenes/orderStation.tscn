@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://cab1eku5yj84e"]
 
 [ext_resource type="Texture2D" uid="uid://bm550ao13vc1x" path="res://Assets/Backgrounds/bg_back.png" id="1_4mpia"]
-[ext_resource type="Texture2D" uid="uid://dculet36jmy6i" path="res://Assets/placeholder.jpg" id="2_6bi0e"]
+[ext_resource type="Script" uid="uid://lqs0mrkynxdi" path="res://Scripts/customer.gd" id="2_6bi0e"]
 [ext_resource type="Texture2D" uid="uid://d0cvg5e1543l6" path="res://Assets/Backgrounds/bg_counter.png" id="3_eelg6"]
+[ext_resource type="Texture2D" uid="uid://6bw0ie0trn2c" path="res://Assets/Sprites/Customers/cust1.png" id="3_k83p3"]
+[ext_resource type="Texture2D" uid="uid://b02li8m1p55q7" path="res://Assets/Sprites/Customers/cust2_closed.png" id="4_k83p3"]
+[ext_resource type="Texture2D" uid="uid://cvh4ws6xvi0ma" path="res://Assets/Sprites/Customers/cust2_open.png" id="5_xm614"]
 
 [node name="OrderStation" type="Node2D" unique_id=70812290]
 
@@ -11,10 +14,17 @@ scale = Vector2(0.8000001, 0.8000001)
 texture = ExtResource("1_4mpia")
 centered = false
 
-[node name="Placeholder Object" type="Sprite2D" parent="." unique_id=1703462565]
-position = Vector2(408, 516)
+[node name="Customer" type="Node2D" parent="." unique_id=2107529507 node_paths=PackedStringArray("custSprite")]
+position = Vector2(403, 539)
 scale = Vector2(1.4055556, 1.4055556)
-texture = ExtResource("2_6bi0e")
+script = ExtResource("2_6bi0e")
+custImgClosed = Array[Texture2D]([ExtResource("3_k83p3"), ExtResource("4_k83p3")])
+custImgOpen = Array[Texture2D]([ExtResource("3_k83p3"), ExtResource("5_xm614")])
+custSprite = NodePath("Customer Sprite")
+
+[node name="Customer Sprite" type="Sprite2D" parent="Customer" unique_id=1703462565]
+scale = Vector2(0.30461133, 0.3046114)
+texture = ExtResource("3_k83p3")
 
 [node name="Background (Counter)" type="Sprite2D" parent="." unique_id=1579824885]
 scale = Vector2(0.8000001, 0.8000001)
