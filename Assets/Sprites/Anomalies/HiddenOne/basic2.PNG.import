@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chkx02vl8i6i1"
-path="res://.godot/imported/basic4.PNG-cea7ae18c7c36ce29ca9f9ebad5212cd.ctex"
+uid="uid://bk74elb3ksu5d"
+path="res://.godot/imported/basic2.PNG-7a35f58531a94cda0ce9fd58a0e80252.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Anomalies/Hidden_One/basic4.PNG"
-dest_files=["res://.godot/imported/basic4.PNG-cea7ae18c7c36ce29ca9f9ebad5212cd.ctex"]
+source_file="res://Assets/Sprites/Anomalies/HiddenOne/basic2.PNG"
+dest_files=["res://.godot/imported/basic2.PNG-7a35f58531a94cda0ce9fd58a0e80252.ctex"]
 
 [params]
 

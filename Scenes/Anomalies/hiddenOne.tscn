@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://cfmwbxlfxcpc2"]
 
-[ext_resource type="Texture2D" uid="uid://dhlkbmpbruvf6" path="res://Assets/Sprites/Anomalies/Hidden_One/basic1.PNG" id="1_hvpey"]
-[ext_resource type="Texture2D" uid="uid://bk74elb3ksu5d" path="res://Assets/Sprites/Anomalies/Hidden_One/basic2.PNG" id="2_0ydpp"]
-[ext_resource type="Texture2D" uid="uid://dyjsto0r4seuy" path="res://Assets/Sprites/Anomalies/Hidden_One/basic3.PNG" id="3_shoxj"]
-[ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/Hidden_One/basic4.PNG" id="4_oybw7"]
-[ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/Hidden_One/basic5.PNG" id="5_gdk6b"]
-[ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/Hidden_One/basic_dead.PNG" id="6_4udgl"]
+[ext_resource type="Script" uid="uid://begmrl0b7nijw" path="res://Scripts/Anomalies/hiddenOne.gd" id="1_0ydpp"]
+[ext_resource type="Texture2D" uid="uid://dhlkbmpbruvf6" path="res://Assets/Sprites/Anomalies/HiddenOne/basic1.PNG" id="1_hvpey"]
+[ext_resource type="Texture2D" uid="uid://bk74elb3ksu5d" path="res://Assets/Sprites/Anomalies/HiddenOne/basic2.PNG" id="2_0ydpp"]
+[ext_resource type="Texture2D" uid="uid://dyjsto0r4seuy" path="res://Assets/Sprites/Anomalies/HiddenOne/basic3.PNG" id="3_shoxj"]
+[ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/HiddenOne/basic4.PNG" id="4_oybw7"]
+[ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/HiddenOne/basic5.PNG" id="5_gdk6b"]
+[ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/HiddenOne/basic_dead.PNG" id="6_4udgl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f5nti"]
 size = Vector2(1217.5, 1554)
@@ -41,7 +42,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Area2D" type="Area2D" unique_id=1927082256]
+[node name="HiddenOne" type="Area2D" unique_id=1927082256]
+script = ExtResource("1_0ydpp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=657838023]
 position = Vector2(-18.75, 4)
