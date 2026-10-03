@@ -1,3 +1,7 @@
 [gd_scene format=3 uid="uid://barb50qy3bk74"]
 
+[ext_resource type="PackedScene" uid="uid://cab1eku5yj84e" path="res://Scenes/orderStation.tscn" id="1_jjvhh"]
+
 [node name="Main" type="Node2D" unique_id=477730885]
+
+[node name="OrderStation" parent="." unique_id=70812290 instance=ExtResource("1_jjvhh")]

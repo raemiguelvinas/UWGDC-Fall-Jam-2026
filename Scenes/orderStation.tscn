@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cab1eku5yj84e"]
+
+[ext_resource type="Texture2D" uid="uid://bm550ao13vc1x" path="res://Assets/Backgrounds/bg_back.png" id="1_4mpia"]
+[ext_resource type="Texture2D" uid="uid://dculet36jmy6i" path="res://Assets/placeholder.jpg" id="2_6bi0e"]
+[ext_resource type="Texture2D" uid="uid://d0cvg5e1543l6" path="res://Assets/Backgrounds/bg_counter.png" id="3_eelg6"]
+
+[node name="OrderStation" type="Node2D" unique_id=70812290]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1694117339]
+scale = Vector2(0.8000001, 0.8000001)
+texture = ExtResource("1_4mpia")
+centered = false
+
+[node name="Placeholder Object" type="Sprite2D" parent="." unique_id=1703462565]
+position = Vector2(408, 516)
+scale = Vector2(1.4055556, 1.4055556)
+texture = ExtResource("2_6bi0e")
+
+[node name="Background (Counter)" type="Sprite2D" parent="." unique_id=1579824885]
+scale = Vector2(0.8000001, 0.8000001)
+texture = ExtResource("3_eelg6")
+centered = false
