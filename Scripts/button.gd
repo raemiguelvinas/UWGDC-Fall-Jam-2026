@@ -12,7 +12,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	scale = scale.lerp(targ_scale, 15 * delta)
+	if not disabled:	
+		scale = scale.lerp(targ_scale, 15 * delta)
+	else:
+		scale = min_scale
 
 func _on_mouse_entered() -> void:
 	targ_scale = max_scale

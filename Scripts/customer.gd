@@ -5,12 +5,22 @@ class_name Customer
 @export var custImgOpen: Array[Texture2D]   # leave a slot empty for customers who don't talk
 @export var custSprite: Sprite2D
 
+@export var alien1SFX: AudioStream
+@export var alien2SFX: AudioStream
+@export var alien3SFX: AudioStream
+@export var alien4SFX: AudioStream
+@export var alien5SFX: AudioStream
+@export var alien6SFX: AudioStream
+
+
 var custSpriteIndex := 0
 var time := 0.0
 var walking := false
 
 var popTween: Tween
 var walkTween: Tween
+var alienSFX: Array[AudioStream]
+
 
 
 func _process(delta: float) -> void:
@@ -25,6 +35,8 @@ func setup(index: int):
 	custSprite.texture = custImgClosed[index]
 	custSprite.scale = Vector2.ONE
 	custSprite.rotation = 0.0
+	
+	alienSFX = [alien1SFX, alien2SFX, alien3SFX, alien4SFX, alien5SFX, alien6SFX]
 
 
 func walkTo(target: Vector2, duration := 1.0):
@@ -48,6 +60,9 @@ func talk():
 	custSprite.texture = custImgClosed[custSpriteIndex]
 	await get_tree().create_timer(0.08).timeout
 
+func playTalk():
+	print("hi")
+	Audio.play_sfx(alienSFX.pick_random())
 
 func talkSetTimes(amount: int):
 	for i in amount:

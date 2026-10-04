@@ -2,14 +2,18 @@
 
 [ext_resource type="Texture2D" uid="uid://bm550ao13vc1x" path="res://Assets/Backgrounds/bg_back.png" id="1_4mpia"]
 [ext_resource type="Script" uid="uid://dnk4t8i53hdxe" path="res://Scripts/order_station.gd" id="1_xctnc"]
+[ext_resource type="Texture2D" uid="uid://dmsm16u6fyyir" path="res://Assets/UI/ApproveIcon1.png" id="2_3etvl"]
 [ext_resource type="Script" uid="uid://lqs0mrkynxdi" path="res://Scripts/customer.gd" id="2_6bi0e"]
-[ext_resource type="Texture2D" uid="uid://dculet36jmy6i" path="res://Assets/placeholder.jpg" id="3_461ys"]
 [ext_resource type="Texture2D" uid="uid://d0cvg5e1543l6" path="res://Assets/Backgrounds/bg_counter.png" id="3_eelg6"]
 [ext_resource type="Texture2D" uid="uid://6bw0ie0trn2c" path="res://Assets/Sprites/Customers/cust1.png" id="3_k83p3"]
+[ext_resource type="Texture2D" uid="uid://uvlfbfjw3lgs" path="res://Assets/UI/DisapproveIcon2.png" id="3_wmylk"]
 [ext_resource type="Texture2D" uid="uid://b02li8m1p55q7" path="res://Assets/Sprites/Customers/cust2_closed.png" id="4_k83p3"]
+[ext_resource type="AudioStream" uid="uid://tlx8v7qewav3" path="res://Assets/Audio/SFX/cashregister.mp3" id="4_y84dp"]
+[ext_resource type="AudioStream" uid="uid://hkeek4newgap" path="res://Assets/Audio/SFX/fail2.mp3" id="5_ae4hg"]
 [ext_resource type="Texture2D" uid="uid://cjthisiputpak" path="res://Assets/Sprites/Customers/c_goateye_01.PNG" id="5_x40nl"]
 [ext_resource type="Texture2D" uid="uid://cvh4ws6xvi0ma" path="res://Assets/Sprites/Customers/cust2_open.png" id="5_xm614"]
 [ext_resource type="Texture2D" uid="uid://bbkw28gkqa1gk" path="res://Assets/Sprites/Customers/c_scrapper_01.PNG" id="6_718e4"]
+[ext_resource type="AudioStream" uid="uid://sd0fuh0cotwa" path="res://Assets/Audio/SFX/bell.mp3" id="6_f1p16"]
 [ext_resource type="Texture2D" uid="uid://ti26fbja6c4e" path="res://Assets/Sprites/Customers/c_snake_01.PNG" id="7_x2lfb"]
 [ext_resource type="Texture2D" uid="uid://d1js07ndvg3fq" path="res://Assets/Sprites/Customers/c_pirate_01.PNG" id="8_x2lfb"]
 [ext_resource type="Texture2D" uid="uid://dbfwpi40yi2ad" path="res://Assets/Sprites/Customers/c_cat_01.PNG" id="9_hov3k"]
@@ -27,14 +31,21 @@
 [ext_resource type="Texture2D" uid="uid://bajn2bj51rg68" path="res://Assets/Sprites/Customers/c_pinky_02.PNG" id="22_bllp2"]
 [ext_resource type="Texture2D" uid="uid://btn0i0ia5hkbq" path="res://Assets/Sprites/Customers/c_squid_02.PNG" id="23_461ys"]
 [ext_resource type="Texture2D" uid="uid://jbddjr3gdnxn" path="res://Assets/Sprites/Customers/c_wyvern_02.PNG" id="24_3etvl"]
+[ext_resource type="Texture2D" uid="uid://bt5m3g2q0t3tk" path="res://Assets/UI/ButtonShape.png" id="27_bllp2"]
+[ext_resource type="Texture2D" uid="uid://bn2kpxiftwtrq" path="res://Assets/UI/ButtonShapePressed.png" id="28_461ys"]
 [ext_resource type="Script" uid="uid://bn8545m8emaqb" path="res://Scripts/button.gd" id="29_3etvl"]
 [ext_resource type="FontFile" uid="uid://bc8c5oav73df7" path="res://Assets/Langar-Regular.ttf" id="30_wmylk"]
+[ext_resource type="AudioStream" uid="uid://yd6hmr63vhph" path="res://Assets/Audio/SFX/alien 1.mp3" id="31_301sw"]
 [ext_resource type="Script" uid="uid://dooqca7vadsfc" path="res://Scripts/speech_bubble.gd" id="31_yp5ha"]
 [ext_resource type="Texture2D" uid="uid://crvrh3v5vi2t5" path="res://Assets/UI/SpeechBubble.png" id="32_b6rya"]
 [ext_resource type="Texture2D" uid="uid://bokxtbh2ursq8" path="res://Assets/Sprites/Objects/cash_register.png" id="32_bllp2"]
-[ext_resource type="Texture2D" uid="uid://dlvc615mbw721" path="res://Assets/UI/Ellipse 3.png" id="33_1n8kl"]
+[ext_resource type="AudioStream" uid="uid://chddljoii6eow" path="res://Assets/Audio/SFX/alien 2.mp3" id="32_y84dp"]
+[ext_resource type="AudioStream" uid="uid://184dtmay2xfh" path="res://Assets/Audio/SFX/alien 3.mp3" id="33_kyke1"]
+[ext_resource type="AudioStream" uid="uid://dje27i38xb5vj" path="res://Assets/Audio/SFX/alien 4.mp3" id="34_ae4hg"]
+[ext_resource type="AudioStream" uid="uid://bax2dw0goesx7" path="res://Assets/Audio/SFX/alien 5.mp3" id="35_f1p16"]
+[ext_resource type="AudioStream" uid="uid://1fpmsj75mqek" path="res://Assets/Audio/SFX/alien 6.mp3" id="36_y40eu"]
 
-[node name="OrderStation" type="Node2D" unique_id=70812290 node_paths=PackedStringArray("customer", "bubble", "spawn_spot", "stand_spot", "exit_spot", "start_order_button")]
+[node name="OrderStation" type="Node2D" unique_id=70812290 node_paths=PackedStringArray("customer", "bubble", "spawn_spot", "stand_spot", "exit_spot", "start_order_button", "cash_register_button")]
 script = ExtResource("1_xctnc")
 customer = NodePath("Customer")
 bubble = NodePath("Speech Bubble")
@@ -42,8 +53,12 @@ spawn_spot = NodePath("Enter Spot")
 stand_spot = NodePath("Ordering Spot")
 exit_spot = NodePath("Leaving Spot")
 start_order_button = NodePath("Take Order Button")
-good_icon = ExtResource("33_1n8kl")
-bad_icon = ExtResource("3_461ys")
+cash_register_button = NodePath("Cash Register")
+good_icon = ExtResource("2_3etvl")
+bad_icon = ExtResource("3_wmylk")
+chaChing = ExtResource("4_y84dp")
+fail = ExtResource("5_ae4hg")
+ding = ExtResource("6_f1p16")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1694117339]
 scale = Vector2(0.8000001, 0.8000001)
@@ -62,8 +77,8 @@ texture = ExtResource("32_b6rya")
 
 [node name="Correct_Incorrect" type="Sprite2D" parent="Speech Bubble" unique_id=782787776]
 position = Vector2(967, 296)
-scale = Vector2(1.4243792, 1.4243792)
-texture = ExtResource("33_1n8kl")
+scale = Vector2(1.0813923, 1.0813923)
+texture = ExtResource("3_wmylk")
 
 [node name="Order Text" type="RichTextLabel" parent="Speech Bubble" unique_id=1158653048]
 custom_minimum_size = Vector2(359.96, 450)
@@ -94,6 +109,12 @@ script = ExtResource("2_6bi0e")
 custImgClosed = Array[Texture2D]([ExtResource("3_k83p3"), ExtResource("4_k83p3"), ExtResource("5_x40nl"), ExtResource("6_718e4"), ExtResource("7_x2lfb"), ExtResource("8_x2lfb"), ExtResource("9_hov3k"), ExtResource("10_xctnc"), ExtResource("11_cle6m"), ExtResource("12_lkta6"), ExtResource("13_n8por")])
 custImgOpen = Array[Texture2D]([ExtResource("14_o3ng7"), ExtResource("5_xm614"), ExtResource("9_mkjiy"), ExtResource("10_20pum"), ExtResource("11_lmrfa"), ExtResource("13_mkjiy"), ExtResource("20_k4e34"), ExtResource("21_wp0gh"), ExtResource("22_bllp2"), ExtResource("23_461ys"), ExtResource("24_3etvl")])
 custSprite = NodePath("Customer Sprite")
+alien1SFX = ExtResource("31_301sw")
+alien2SFX = ExtResource("32_y84dp")
+alien3SFX = ExtResource("33_kyke1")
+alien4SFX = ExtResource("34_ae4hg")
+alien5SFX = ExtResource("35_f1p16")
+alien6SFX = ExtResource("36_y40eu")
 
 [node name="Customer Sprite" type="Sprite2D" parent="Customer" unique_id=1703462565]
 position = Vector2(14.146271, -3.9295502)
@@ -114,7 +135,7 @@ position = Vector2(2401, 607)
 [node name="Enter Spot" type="Marker2D" parent="." unique_id=1371470408]
 position = Vector2(-402, 607)
 
-[node name="Take Order Button" type="TextureButton" parent="." unique_id=806903904]
+[node name="Cash Register" type="TextureButton" parent="." unique_id=806903904]
 offset_left = 342.00003
 offset_top = 754.0
 offset_right = 717.6006
@@ -126,7 +147,7 @@ ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("29_3etvl")
 
-[node name="Button Text" type="Label" parent="Take Order Button" unique_id=1071870017]
+[node name="Button Text" type="Label" parent="Cash Register" unique_id=1071870017]
 visible = false
 layout_mode = 0
 offset_left = 20.334728
@@ -139,5 +160,32 @@ text = "TAKE ORDER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Take Order Button" type="TextureButton" parent="." unique_id=1010850128]
+offset_left = 347.00003
+offset_top = 521.00006
+offset_right = 722.6006
+offset_bottom = 657.4217
+scale = Vector2(0.9593493, 0.9670406)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("27_bllp2")
+texture_pressed = ExtResource("28_461ys")
+ignore_texture_size = true
+stretch_mode = 4
+script = ExtResource("29_3etvl")
+
+[node name="Button Text" type="Label" parent="Take Order Button" unique_id=1640172990]
+layout_mode = 0
+offset_left = 20.334728
+offset_top = 38.368256
+offset_right = 337.33472
+offset_bottom = 113.368256
+theme_override_fonts/font = ExtResource("30_wmylk")
+theme_override_font_sizes/font_size = 51
+text = "TAKE ORDER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="Cash Register" to="Cash Register" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Cash Register" to="Cash Register" method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="Take Order Button" to="Take Order Button" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Take Order Button" to="Take Order Button" method="_on_mouse_exited"]

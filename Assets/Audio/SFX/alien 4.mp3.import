@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dje27i38xb5vj"
+path="res://.godot/imported/alien 4.mp3-d10c733be53e1434d911544f87542172.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/SFX/alien 4.mp3"
+dest_files=["res://.godot/imported/alien 4.mp3-d10c733be53e1434d911544f87542172.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

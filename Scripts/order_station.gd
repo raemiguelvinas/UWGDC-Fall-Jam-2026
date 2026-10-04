@@ -3,6 +3,8 @@ class_name OrderStation
 
 # Main starts the ticket when it hears this
 signal order_taken(order: OrderData)
+# the player clicked the register after a correct order; Main pays out
+signal cashed_out
 
 @export_group("Nodes")
 @export var customer: Customer
@@ -10,7 +12,8 @@ signal order_taken(order: OrderData)
 @export var spawn_spot: Marker2D   # off-screen, left
 @export var stand_spot: Marker2D   # where the customer waits
 @export var exit_spot: Marker2D    # off-screen, right
-@export var start_order_button: BaseButton
+@export var start_order_button: BaseButton    # sits on top of the register, only visible when a customer is waiting
+@export var cash_register_button: BaseButton  # always visible, only enabled when there's a payment to collect
 
 @export_group("Textures")
 @export var good_icon: Texture2D
@@ -19,16 +22,23 @@ signal order_taken(order: OrderData)
 @export_group("Timing")
 @export var walk_time := 1.0
 @export var speech_time := 3.0    # how long the order bubble stays up
-@export var result_time := 1.2    # how long the good/bad icon stays up
+@export var result_time := 1.2    # how long the bad icon stays up
 @export var tolerance := 5.0      # how far off each patty side can be
+
+@export var chaChing: AudioStream 
+@export var fail: AudioStream 
+@export var ding: AudioStream 
 
 var order: OrderData
 var last_customer := -1
+var awaiting_cash := false
 
 
 func _ready():
-	start_order_button.disabled = true
+	start_order_button.visible = false
 	start_order_button.pressed.connect(_on_start_order_pressed)
+	cash_register_button.disabled = true
+	cash_register_button.pressed.connect(_on_cash_register_pressed)
 	next_customer()
 
 
@@ -43,13 +53,16 @@ func next_customer():
 	customer.setup(order.customerIndex)
 	customer.global_position = spawn_spot.global_position
 	await customer.walkTo(stand_spot.global_position, walk_time)
-	start_order_button.disabled = false
+	start_order_button.visible = true
 
 
 func _on_start_order_pressed():
-	start_order_button.disabled = true
+	customer.playTalk()
+	start_order_button.visible = false
 	bubble.showOrder(order.toBBCode())
+
 	await customer.talkFor(speech_time)
+
 	bubble.hideBubble()
 	order_taken.emit(order)
 
@@ -64,10 +77,29 @@ func serve_burger(ingredients: Array[int], regular: float, flipped: float) -> bo
 func _show_result(ok: bool):
 	bubble.showResult(good_icon if ok else bad_icon)
 	if ok:
+		# customer stays until the player clicks the register
+		Audio.play_sfx(ding)
 		customer.pop(1.3, 0.3)
+		awaiting_cash = true
+		cash_register_button.disabled = false
+		
+		return
+	Audio.play_sfx(fail)
+	# wrong order: customer leaves by themselves
 	await get_tree().create_timer(result_time).timeout
 	bubble.hideBubble()
 	await _customer_leaves()
+
+
+func _on_cash_register_pressed():
+	if not awaiting_cash:
+		return
+	awaiting_cash = false
+	cash_register_button.disabled = true
+	bubble.hideBubble()
+	cashed_out.emit()      # Main pays out
+	Audio.play_sfx(chaChing)
+	_customer_leaves()     # then they leave and the next one walks in
 
 
 # Main calls this when the ticket's timer runs out

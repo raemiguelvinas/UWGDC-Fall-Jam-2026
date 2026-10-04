@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dq3pbvetogthk" path="res://Assets/Backgrounds/kitchen_ing_comp.PNG" id="8_kqbow"]
 [ext_resource type="Texture2D" uid="uid://r4p4rxayhkf3" path="res://Assets/UI/CookMeterRightFill.png" id="9_6152m"]
 [ext_resource type="Texture2D" uid="uid://ds0c6uavxhgd5" path="res://Assets/UI/CookMeterTop.png" id="10_t4io1"]
+[ext_resource type="AudioStream" uid="uid://bji6wtpd1xlff" path="res://Assets/Audio/SFX/sizzle.mp3" id="13_m2qov"]
 [ext_resource type="Texture2D" uid="uid://bt5m3g2q0t3tk" path="res://Assets/UI/ButtonShape.png" id="13_t4io1"]
 [ext_resource type="Texture2D" uid="uid://bn2kpxiftwtrq" path="res://Assets/UI/ButtonShapePressed.png" id="14_4mjha"]
 [ext_resource type="FontFile" uid="uid://bc8c5oav73df7" path="res://Assets/Langar-Regular.ttf" id="16_qnowd"]
@@ -69,6 +70,7 @@ superBurntTexture = ExtResource("8_2ms5u")
 hopHeight = 500.0
 pattySprite = NodePath("Patty Sprite")
 progress = NodePath("Patty Progress UI")
+sizzle = ExtResource("13_m2qov")
 
 [node name="Patty Sprite" type="Sprite2D" parent="Patty" unique_id=533707113]
 texture = ExtResource("4_sj2fg")

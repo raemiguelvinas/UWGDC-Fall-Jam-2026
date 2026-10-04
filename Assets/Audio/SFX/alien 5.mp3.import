@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bax2dw0goesx7"
+path="res://.godot/imported/alien 5.mp3-643a28e422149cef0c58dae4c9368bc6.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/SFX/alien 5.mp3"
+dest_files=["res://.godot/imported/alien 5.mp3-643a28e422149cef0c58dae4c9368bc6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

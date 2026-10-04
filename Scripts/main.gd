@@ -4,40 +4,61 @@ extends Node2D
 @export var order_station: OrderStation
 @export var build_station: BuildCookStation
 @export var ticket: OrderTicket
+@export var awakeness_bar: Range   # just a TextureProgressBar, no script needed
 @export var money_label: Label
 @export var order_nav_button: BaseButton
 @export var build_nav_button: BaseButton
-@export var wipe: ColorRect   # black, NOT anchored; sits last in the tree so it draws on top
+@export var vignette: ColorRect   # any ColorRect; shader is applied in code
+@export var wipe: ColorRect       # black, NOT anchored; sits last in the tree so it draws on top
 
 @export_group("Game")
 @export var win_scene: PackedScene
+@export var lose_scene: PackedScene
 @export var order_time := 40.0
 @export var base_pay := 70.0
 @export var max_tip := 15.0
-@export_range(0.0, 0.95) var tip_drain_start := 0.3   # tip starts shrinking after this much time is gone
+@export_range(0.0, 0.95) var tip_drain_start := 0.3
 @export var win_money := 1000.0
-@export var wipe_time := 0.5   # seconds for EACH half (slide in, then slide out)
+@export var wipe_time := 0.25   # seconds for EACH half (fade out, then fade in)
+
+@export_group("Awakeness")
+@export var max_awakeness := 100.0
+@export var awake_drain_per_second := 1.0
+@export var awake_per_order := 20.0                          # refill for a correct order
+@export_range(0.05, 1.0) var sleepy_start := 0.5             # effects begin below this fraction
+@export_range(0.0, 1.0) var vignette_max := 0.85
+
+@export_group("Sound")
+@export var cha_ching: AudioStream
+@export var bgMusic: AudioStream
+
 
 var money_cents := -100   # starts at -$1 lol
 var stations: Dictionary
 var current := "order"
 var transitioning := false
 var money_tween: Tween
+var pending_time_fraction := 0.0   # tip fraction waiting for the cash register click
+
+var awakeness := 0.0
+var game_over := false
 
 
 func _ready():
+	
+	
 	stations = {"order": order_station, "build": build_station}
 	for key in stations:
 		stations[key].visible = (key == current)
 
 	order_station.order_taken.connect(_on_order_taken)
+	order_station.cashed_out.connect(_on_cashed_out)
 	build_station.burger_finished.connect(_on_burger_finished)
 	ticket.time_up.connect(_on_time_up)
 	order_nav_button.pressed.connect(go_to.bind("order"))
 	build_nav_button.pressed.connect(go_to.bind("build"))
 
-	# park the wipe off-screen to the left
-	# (top-left anchors so the layout system can't fight the slide)
+	# full-screen black rect, fully transparent until needed
 	wipe.set_anchors_preset(Control.PRESET_TOP_LEFT)
 	wipe.position = Vector2.ZERO
 	wipe.size = get_viewport().get_visible_rect().size
@@ -46,15 +67,80 @@ func _ready():
 	wipe.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	wipe.z_as_relative = false
 	wipe.z_index = 100
-	# no z_index stuff needed anymore
+
+	_setup_vignette()
+	Audio.reset_effects()   # the autoload survives scene changes, so start clean
+	Audio.play_music(bgMusic)
+
+	awakeness = max_awakeness
+	awakeness_bar.max_value = max_awakeness
+	awakeness_bar.step = 0.1
+	_update_awakeness()
 
 	update_nav()
 	update_money(false)
+	
+	
 
-# --- extra ---
-func update_nav():
-	order_nav_button.disabled = (current == "order")
-	build_nav_button.disabled = (current == "build")
+
+func _process(delta: float) -> void:
+	if game_over:
+		return
+	add_awakeness(-awake_drain_per_second * delta)
+
+
+# --- awakeness ---
+
+func add_awakeness(amount: float):
+	if game_over:
+		return
+	awakeness = clampf(awakeness + amount, 0.0, max_awakeness)
+	_update_awakeness()
+	if awakeness <= 0.0:
+		_lose()
+
+
+func _update_awakeness():
+	awakeness_bar.value = awakeness
+
+	# 0 while above sleepy_start, rising to 1 at zero awakeness
+	var fraction := awakeness / max_awakeness
+	var sleepy := clampf((sleepy_start - fraction) / sleepy_start, 0.0, 1.0)
+	Audio.muffle = sleepy   # reverb + low pass + quieter, all at once
+
+	vignette.visible = sleepy > 0.0
+	(vignette.material as ShaderMaterial).set_shader_parameter("strength", sleepy * vignette_max)
+
+
+func _lose():
+	game_over = true
+	Audio.reset_effects()
+	get_tree().change_scene_to_packed(lose_scene)
+
+
+func _setup_vignette():
+	vignette.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	vignette.position = Vector2.ZERO
+	vignette.size = get_viewport().get_visible_rect().size
+	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vignette.z_as_relative = false
+	vignette.z_index = 90   # above the game, below the wipe
+
+	var shader := Shader.new()
+	shader.code = """
+shader_type canvas_item;
+uniform float strength : hint_range(0.0, 1.0) = 0.0;
+void fragment() {
+	float d = length(UV - vec2(0.5));
+	float v = smoothstep(0.2, 0.75, d);
+	COLOR = vec4(0.0, 0.0, 0.0, v * strength);
+}
+"""
+	var mat := ShaderMaterial.new()
+	mat.shader = shader
+	vignette.material = mat
+	vignette.visible = false
+
 
 # --- order flow ---
 
@@ -78,7 +164,14 @@ func _on_burger_finished(ingredients: Array[int], regular: float, flipped: float
 	await go_to("order")
 
 	if order_station.serve_burger(ingredients, regular, flipped):
-		award(time_fraction)
+		# correct: awakeness now, money when the register is clicked
+		pending_time_fraction = time_fraction
+		add_awakeness(awake_per_order)
+
+
+# the player clicked the cash register after a correct order
+func _on_cashed_out():
+	award(pending_time_fraction)
 
 
 # --- money ---
@@ -89,8 +182,11 @@ func award(time_fraction: float):
 	var tip_cents := roundi(max_tip * 100.0 * tip_fraction)
 	money_cents += roundi(base_pay * 100.0) + tip_cents
 	update_money(true)
+	
 
 	if money_cents >= roundi(win_money * 100.0):
+		game_over = true   # stops the drain so you can't lose on the way to the win screen
+		Audio.reset_effects()
 		get_tree().change_scene_to_packed(win_scene)
 
 
@@ -114,7 +210,14 @@ func update_money(do_pop: bool):
 		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
-# --- screen transition ---
+# --- nav ---
+
+func update_nav():
+	order_nav_button.disabled = (current == "order")
+	build_nav_button.disabled = (current == "build")
+
+
+# --- screen transition: fade to black, swap stations, fade back ---
 
 func go_to(station_name: String):
 	if transitioning or station_name == current:
@@ -124,7 +227,6 @@ func go_to(station_name: String):
 	wipe.modulate.a = 0.0
 	wipe.visible = true
 
-	# fade to black
 	var t := create_tween()
 	t.tween_property(wipe, "modulate:a", 1.0, wipe_time)
 	await t.finished
@@ -134,7 +236,6 @@ func go_to(station_name: String):
 	current = station_name
 	update_nav()
 
-	# fade back in
 	t = create_tween()
 	t.tween_property(wipe, "modulate:a", 0.0, wipe_time)
 	await t.finished

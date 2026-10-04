@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ynqdv4iqgb3d" path="res://Scripts/main.gd" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cab1eku5yj84e" path="res://Scenes/orderStation.tscn" id="1_jjvhh"]
+[ext_resource type="AudioStream" uid="uid://tlx8v7qewav3" path="res://Assets/Audio/SFX/cashregister.mp3" id="2_fevyy"]
+[ext_resource type="AudioStream" uid="uid://bghiwrhl53nq4" path="res://Assets/Audio/Music/gameplay.ogg" id="3_hibaj"]
 [ext_resource type="PackedScene" uid="uid://c3t3b5ybj7yq3" path="res://Scenes/cookStation.tscn" id="3_jjvhh"]
 [ext_resource type="Texture2D" uid="uid://cgp62i7q5vhte" path="res://Assets/UI/OrderActive.png" id="4_344ge"]
 [ext_resource type="Texture2D" uid="uid://cfupxnhyuinui" path="res://Assets/UI/OrderDisabled.png" id="5_ynf5e"]
@@ -13,28 +15,37 @@
 [ext_resource type="FontFile" uid="uid://bc8c5oav73df7" path="res://Assets/Langar-Regular.ttf" id="10_fdnlq"]
 [ext_resource type="Texture2D" uid="uid://bfdteaaxoq65a" path="res://Assets/UI/Circle Timer Backing.png" id="11_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://dlvc615mbw721" path="res://Assets/UI/Ellipse 3.png" id="12_wsu2k"]
+[ext_resource type="Texture2D" uid="uid://ch6bfdmvtuxne" path="res://Assets/UI/AwakeBarBG.png" id="14_h1bgf"]
+[ext_resource type="Texture2D" uid="uid://doq3ndvwv8r1r" path="res://Assets/UI/AwakeBarBacking.png" id="15_b3802"]
+[ext_resource type="Texture2D" uid="uid://dexhjjans84i0" path="res://Assets/UI/AwakeBarFilling.png" id="16_fevyy"]
+[ext_resource type="Texture2D" uid="uid://dscrt5fm1wlg2" path="res://Assets/UI/EyeIcon.png" id="17_hibaj"]
 
-[node name="Main" type="Node2D" unique_id=477730885 node_paths=PackedStringArray("order_station", "build_station", "ticket", "money_label", "order_nav_button", "build_nav_button", "wipe")]
+[node name="Main" type="Node2D" unique_id=477730885 node_paths=PackedStringArray("order_station", "build_station", "ticket", "awakeness_bar", "money_label", "order_nav_button", "build_nav_button", "vignette", "wipe")]
 script = ExtResource("1_8gbba")
 order_station = NodePath("OrderStation")
 build_station = NodePath("CookStation")
 ticket = NodePath("Order Ticket")
+awakeness_bar = NodePath("Awakeness/Awakeness Bar")
 money_label = NodePath("Money")
 order_nav_button = NodePath("OrderNav")
 build_nav_button = NodePath("CookNav")
+vignette = NodePath("Vignette")
 wipe = NodePath("Screen Wipe")
 order_time = 60.0
 wipe_time = 0.2
+cha_ching = ExtResource("2_fevyy")
+bgMusic = ExtResource("3_hibaj")
 
 [node name="OrderStation" parent="." unique_id=70812290 instance=ExtResource("1_jjvhh")]
 
 [node name="CookStation" parent="." unique_id=1362662552 instance=ExtResource("3_jjvhh")]
 
 [node name="Money" type="Label" parent="." unique_id=865817692]
-offset_left = 50.0
-offset_top = 931.0
-offset_right = 196.0
-offset_bottom = 1039.0
+offset_left = 52.0
+offset_top = 919.99994
+offset_right = 198.0
+offset_bottom = 1028.0
+scale = Vector2(0.80440366, 0.80440366)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 22
@@ -43,21 +54,23 @@ theme_override_font_sizes/font_size = 115
 text = "$-1"
 
 [node name="OrderNav" type="TextureButton" parent="." unique_id=421259440]
-offset_left = 1509.0
-offset_top = 799.0
-offset_right = 2066.0
-offset_bottom = 962.0
+offset_left = 1434.8767
+offset_top = 752.3086
+offset_right = 1991.8767
+offset_bottom = 915.3086
 scale = Vector2(0.73384815, 0.73384815)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 texture_normal = ExtResource("4_344ge")
 texture_disabled = ExtResource("5_ynf5e")
 script = ExtResource("6_hptm8")
 
 [node name="CookNav" type="TextureButton" parent="." unique_id=1690177037]
-offset_left = 1509.0
-offset_top = 937.99994
-offset_right = 2066.0
-offset_bottom = 1101.0
+offset_left = 1434.8767
+offset_top = 891.30853
+offset_right = 1991.8767
+offset_bottom = 1054.3086
 scale = Vector2(0.73384815, 0.73384815)
+pivot_offset_ratio = Vector2(0.5, 0.5)
 texture_normal = ExtResource("7_d1ilt")
 texture_disabled = ExtResource("8_6iyac")
 script = ExtResource("6_hptm8")
@@ -116,9 +129,56 @@ texture_under = ExtResource("11_jkdf5")
 texture_progress = ExtResource("12_wsu2k")
 texture_progress_offset = Vector2(16, 16)
 
-[node name="Screen Wipe" type="ColorRect" parent="." unique_id=1946898199]
+[node name="Awakeness" type="Control" parent="." unique_id=2020418646]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 516.0
+offset_top = 706.0
+offset_right = 556.0
+offset_bottom = 746.0
+scale = Vector2(0.5796275, 0.5796275)
+
+[node name="BG BG" type="Sprite2D" parent="Awakeness" unique_id=1333174784]
+position = Vector2(720, 425)
+scale = Vector2(1.0143745, 1.0143745)
+texture = ExtResource("14_h1bgf")
+
+[node name="BG BG2" type="Sprite2D" parent="Awakeness" unique_id=73988206]
+position = Vector2(751, 420)
+scale = Vector2(1.1188836, 1.1188836)
+texture = ExtResource("15_b3802")
+
+[node name="Awakeness Bar" type="TextureProgressBar" parent="Awakeness" unique_id=1254816404]
+layout_mode = 0
+offset_left = 205.0
+offset_top = 348.0
+offset_right = 1659.0
+offset_bottom = 653.0
+value = 100.0
+texture_progress = ExtResource("16_fevyy")
+texture_progress_offset = Vector2(-5.88, 3.75)
+
+[node name="Eye" type="Sprite2D" parent="Awakeness" unique_id=248394322]
+position = Vector2(152, 419)
+texture = ExtResource("17_hibaj")
+
+[node name="Vignette" type="ColorRect" parent="." unique_id=592458610]
 visible = false
+offset_top = -6.1035156e-05
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 39.99994
 scale = Vector2(47.81783, 27.518196)
 color = Color(0, 0, 0, 1)
+
+[node name="Screen Wipe" type="ColorRect" parent="." unique_id=1946898199]
+visible = false
+offset_top = -6.1035156e-05
+offset_right = 40.0
+offset_bottom = 39.99994
+scale = Vector2(47.81783, 27.518196)
+color = Color(0, 0, 0, 1)
+
+[connection signal="mouse_entered" from="OrderNav" to="OrderNav" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="OrderNav" to="OrderNav" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="CookNav" to="CookNav" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CookNav" to="CookNav" method="_on_mouse_exited"]

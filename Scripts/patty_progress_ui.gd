@@ -1,7 +1,6 @@
 class_name PattyProgress
 extends Node2D
-# Make this a CHILD OF THE PATTY ROOT (not of the patty's Sprite2D).
-# It then follows the patty around and hides whenever the patty is hidden.
+# follows the patty around and hides whenever the patty is hidden.
 
 @export var regularBar: Range
 @export var flippedBar: Range

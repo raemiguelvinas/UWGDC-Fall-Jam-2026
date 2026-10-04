@@ -14,6 +14,8 @@ signal picked
 @export var pattySprite: Sprite2D
 @export var progress: PattyProgress
 
+@export var sizzle: AudioStream
+
 enum State { IDLE, FALLING, COOKING, DONE }
 
 var state := State.IDLE
@@ -46,7 +48,9 @@ func start_cooking(spot: Vector2):
 	tween = create_tween()
 	tween.tween_property(self, "global_position", spot, 0.3)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)   # no bounce
+	Audio.play_sfx(sizzle)
 	tween.tween_callback(func(): state = State.COOKING)
+	
 
 
 func _process(delta: float) -> void:
@@ -65,12 +69,16 @@ func updateSprite():
 
 	if worstSide > 70:
 		pattySprite.texture = superBurntTexture
+
 	elif worstSide > 55:
 		pattySprite.texture = burntTexture
+
 	elif worstSide > 40:
 		pattySprite.texture = cookedTexture
+
 	else:
 		pattySprite.texture = rawTexture
+
 
 	if progress:
 		progress.showValues(regularSide, flippedSide, flipped)
@@ -91,6 +99,7 @@ func flip():
 	if busy: return
 	busy = true
 	flipped = !flipped
+	Audio.play_sfx(sizzle)
 
 	tween = create_tween().set_parallel(true)
 
