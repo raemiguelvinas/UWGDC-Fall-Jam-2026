@@ -1,7 +1,124 @@
 [gd_scene format=3 uid="uid://barb50qy3bk74"]
 
+[ext_resource type="Script" uid="uid://ynqdv4iqgb3d" path="res://Scripts/main.gd" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cab1eku5yj84e" path="res://Scenes/orderStation.tscn" id="1_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://c3t3b5ybj7yq3" path="res://Scenes/cookStation.tscn" id="3_jjvhh"]
+[ext_resource type="Texture2D" uid="uid://cgp62i7q5vhte" path="res://Assets/UI/OrderActive.png" id="4_344ge"]
+[ext_resource type="Texture2D" uid="uid://cfupxnhyuinui" path="res://Assets/UI/OrderDisabled.png" id="5_ynf5e"]
+[ext_resource type="Script" uid="uid://bn8545m8emaqb" path="res://Scripts/button.gd" id="6_hptm8"]
+[ext_resource type="Texture2D" uid="uid://c5nw5nwi4ppns" path="res://Assets/UI/GrillActive.png" id="7_d1ilt"]
+[ext_resource type="Texture2D" uid="uid://bwe3mwpi4xwr" path="res://Assets/UI/GrillDisabled.png" id="8_6iyac"]
+[ext_resource type="Texture2D" uid="uid://dxvlccnwsbt88" path="res://Assets/UI/Receipt.png" id="9_6iyac"]
+[ext_resource type="Script" uid="uid://bs2h3tvex1v83" path="res://Scripts/order_ticket.gd" id="9_fdnlq"]
+[ext_resource type="FontFile" uid="uid://bc8c5oav73df7" path="res://Assets/Langar-Regular.ttf" id="10_fdnlq"]
+[ext_resource type="Texture2D" uid="uid://bfdteaaxoq65a" path="res://Assets/UI/Circle Timer Backing.png" id="11_jkdf5"]
+[ext_resource type="Texture2D" uid="uid://dlvc615mbw721" path="res://Assets/UI/Ellipse 3.png" id="12_wsu2k"]
 
-[node name="Main" type="Node2D" unique_id=477730885]
+[node name="Main" type="Node2D" unique_id=477730885 node_paths=PackedStringArray("order_station", "build_station", "ticket", "money_label", "order_nav_button", "build_nav_button", "wipe")]
+script = ExtResource("1_8gbba")
+order_station = NodePath("OrderStation")
+build_station = NodePath("CookStation")
+ticket = NodePath("Order Ticket")
+money_label = NodePath("Money")
+order_nav_button = NodePath("OrderNav")
+build_nav_button = NodePath("CookNav")
+wipe = NodePath("Screen Wipe")
+order_time = 60.0
+wipe_time = 0.2
 
 [node name="OrderStation" parent="." unique_id=70812290 instance=ExtResource("1_jjvhh")]
+
+[node name="CookStation" parent="." unique_id=1362662552 instance=ExtResource("3_jjvhh")]
+
+[node name="Money" type="Label" parent="." unique_id=865817692]
+offset_left = 50.0
+offset_top = 931.0
+offset_right = 196.0
+offset_bottom = 1039.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 22
+theme_override_fonts/font = ExtResource("10_fdnlq")
+theme_override_font_sizes/font_size = 115
+text = "$-1"
+
+[node name="OrderNav" type="TextureButton" parent="." unique_id=421259440]
+offset_left = 1509.0
+offset_top = 799.0
+offset_right = 2066.0
+offset_bottom = 962.0
+scale = Vector2(0.73384815, 0.73384815)
+texture_normal = ExtResource("4_344ge")
+texture_disabled = ExtResource("5_ynf5e")
+script = ExtResource("6_hptm8")
+
+[node name="CookNav" type="TextureButton" parent="." unique_id=1690177037]
+offset_left = 1509.0
+offset_top = 937.99994
+offset_right = 2066.0
+offset_bottom = 1101.0
+scale = Vector2(0.73384815, 0.73384815)
+texture_normal = ExtResource("7_d1ilt")
+texture_disabled = ExtResource("8_6iyac")
+script = ExtResource("6_hptm8")
+
+[node name="Order Ticket" type="Control" parent="." unique_id=75649142 node_paths=PackedStringArray("orderLabel", "wheel")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_fdnlq")
+orderLabel = NodePath("Order Text")
+wheel = NodePath("Time Circle")
+
+[node name="bg" type="Sprite2D" parent="Order Ticket" unique_id=1859977669]
+position = Vector2(1750.9427, 272.58005)
+scale = Vector2(0.4728825, 0.48077258)
+texture = ExtResource("9_6iyac")
+
+[node name="Order Text" type="RichTextLabel" parent="Order Ticket" unique_id=2026195010]
+custom_minimum_size = Vector2(300, 500)
+custom_maximum_size = Vector2(300, 500)
+layout_mode = 0
+offset_left = 1635.0
+offset_top = 43.0
+offset_right = 1935.0
+offset_bottom = 543.0
+scale = Vector2(0.7495119, 0.7495119)
+theme_override_colors/default_color = Color(0.1254902, 0.17254902, 0.14901961, 1)
+theme_override_constants/line_separation = 7
+theme_override_constants/paragraph_separation = 0
+theme_override_fonts/normal_font = ExtResource("10_fdnlq")
+theme_override_fonts/bold_font = ExtResource("10_fdnlq")
+theme_override_font_sizes/normal_font_size = 53
+text = "bun
+patty
+(50%/50%)
+lamb
+pickle
+cheese
+lightsaber
+bun"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Time Circle" type="TextureProgressBar" parent="Order Ticket" unique_id=132345598]
+layout_mode = 0
+offset_left = 1487.0
+offset_top = -49.999992
+offset_right = 1719.0
+offset_bottom = 182.0
+scale = Vector2(0.458594, 0.458594)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("11_jkdf5")
+texture_progress = ExtResource("12_wsu2k")
+texture_progress_offset = Vector2(16, 16)
+
+[node name="Screen Wipe" type="ColorRect" parent="." unique_id=1946898199]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(47.81783, 27.518196)
+color = Color(0, 0, 0, 1)

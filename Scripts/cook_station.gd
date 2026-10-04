@@ -1,8 +1,9 @@
 extends Node2D
-
-enum Ingredient { PATTY, CHEESE, TOMATO, LETTUCE }   # 0, 1, 2, 3
+class_name BuildCookStation
 
 signal burger_finished(ingredients: Array[int], regular_side: float, flipped_side: float)
+
+enum Ingredient { PATTY, CHEESE, TOMATO, LETTUCE }   # 0, 1, 2, 3
 
 # nodes
 @export_group("Nodes")
@@ -40,9 +41,16 @@ var patty_regular := 0.0
 var patty_flipped := 0.0
 var patty_on_burger := false
 
+# Main turns this on while a customer's order is active
+var can_serve := false:
+	set(value):
+		can_serve = value
+		if is_node_ready():
+			refresh_buttons()
+
+
 func _ready():
 	patty.visible = false
-	finish_order_button.visible = false
 
 	start_cook_button.pressed.connect(patty_start)
 	restart_button.pressed.connect(patty_start)
@@ -59,11 +67,32 @@ func _ready():
 	tomato_button.modulate.a = 0
 	lettuce_button.modulate.a = 0
 
+	refresh_buttons()
+
+
+# One place that decides which buttons are visible
+func refresh_buttons():
+	var s := patty.state
+	# no patty at all (and none on the burger): only "start" makes sense
+	start_cook_button.visible = s == Patty.State.IDLE and not patty_on_burger
+	# a patty exists (cooking or waiting at the side)
+	restart_button.visible = s != Patty.State.IDLE
+	# something is actually cooking
+	finish_cook_button.visible = s == Patty.State.FALLING or s == Patty.State.COOKING
+	# there's a burger build to reset (bun is down)
+	reset_burger_button.visible = stack.get_child_count() > 0
+	# patty is on the burger AND there's an order to serve
+	finish_order_button.visible = patty_on_burger and can_serve
+
+
 func toppings_full() -> bool:
 	return limit_toppings and toppings.size() >= max_toppings
 
+
 func patty_start():
 	patty.start_cooking(grill_spot.global_position)
+	refresh_buttons()
+
 
 func patty_finish():
 	if not patty.isCooking():
@@ -71,12 +100,15 @@ func patty_finish():
 	patty.finishCooking(side_spot.global_position)
 	if stack.get_child_count() == 0:
 		add_layer(bottom_bun)
+	refresh_buttons()
+
 
 func add_ingredient(ingredient: int):
 	if stack.get_child_count() == 0 or toppings_full():
 		return
 	toppings.append(ingredient)
 	add_layer(ingredient_textures[ingredient])
+
 
 func add_patty():
 	if toppings_full():
@@ -87,7 +119,8 @@ func add_patty():
 	add_layer(patty.pattySprite.texture)
 	patty.putAway()
 	patty_on_burger = true
-	finish_order_button.visible = true
+	refresh_buttons()
+
 
 func add_layer(tex: Texture2D):
 	var layer = Sprite2D.new()
@@ -97,13 +130,14 @@ func add_layer(tex: Texture2D):
 	stack.add_child(layer)
 	create_tween().tween_property(layer, "position:y", y, 0.15)
 
+
 func clear_stack():
 	for layer in stack.get_children():
 		stack.remove_child(layer)   # remove right away so the count is correct
 		layer.queue_free()
 	toppings.clear()
 	patty_on_burger = false
-	finish_order_button.visible = false
+
 
 func reset_burger():
 	# bring the patty back if it was put on the burger
@@ -116,11 +150,21 @@ func reset_burger():
 	# put the bottom bun back if there's a finished patty waiting
 	if patty.state == Patty.State.DONE:
 		add_layer(bottom_bun)
+	refresh_buttons()
+
 
 func finish_order():
+	if not can_serve or not patty_on_burger:
+		return
+	# take a snapshot now so nothing can change during the short wait
+	var ingredients: Array[int] = toppings.duplicate()
+	var regular := patty_regular
+	var flipped := patty_flipped
+
 	finish_order_button.visible = false
 	add_layer(top_bun)
 	await get_tree().create_timer(0.4).timeout
 
-	burger_finished.emit(toppings.duplicate(), patty_regular, patty_flipped)
+	burger_finished.emit(ingredients, regular, flipped)
 	clear_stack()
+	refresh_buttons()
