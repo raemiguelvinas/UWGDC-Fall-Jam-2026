@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://cn2don1rhugl2" path="res://Scripts/Anomalies/burgerMeat.gd" id="1_algsm"]
 [ext_resource type="Texture2D" uid="uid://oemlvnwvjy7u" path="res://Assets/Sprites/Anomalies/BurgerMeat/burnt_burger.png" id="2_rjc5t"]
-[ext_resource type="AudioStream" uid="uid://ctkkr530g1g2h" path="res://Assets/Audio/SFX/jumpscare_bad.mp3" id="3_agwm8"]
 [ext_resource type="Texture2D" uid="uid://bx8f3idfcotxd" path="res://Assets/Sprites/Anomalies/BurgerMeat/idle_burger.png" id="3_akbs4"]
 [ext_resource type="AudioStream" uid="uid://cs1a0vw81mrmu" path="res://Assets/Sounds/laugh.mp3" id="4_rjc5t"]
 
@@ -30,10 +29,7 @@ size = Vector2(165, 157)
 
 [node name="BurgerMeat" type="Area2D" unique_id=565560971]
 script = ExtResource("1_algsm")
-scareTexture = ExtResource("3_akbs4")
-scareSound = ExtResource("3_agwm8")
-scareDamage = 40.0
-timeBeforeAttack = 7.0
+timeBeforeAttack = 15.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1964197859]
 scale = Vector2(0.1487805, 0.1487805)

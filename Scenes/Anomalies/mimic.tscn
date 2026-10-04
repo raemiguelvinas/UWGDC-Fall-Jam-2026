@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://dag30fcheq62a"]
+
+[ext_resource type="Script" uid="uid://cbm7l5r5as7j" path="res://Scripts/Anomalies/mimic.gd" id="1_e8kt3"]
+[ext_resource type="AudioStream" uid="uid://dih0v5p8fl5wk" path="res://Assets/Audio/SFX/mimic_babya.mp3" id="2_fix8o"]
+[ext_resource type="AudioStream" uid="uid://dx7nbqti2ntww" path="res://Assets/Audio/SFX/mimic_babyb.mp3" id="3_n8fjg"]
+[ext_resource type="AudioStream" uid="uid://bf05oaf8j7ky4" path="res://Assets/Audio/SFX/mimic_babyc.mp3" id="4_vmbj5"]
+[ext_resource type="AudioStream" uid="uid://bk6snuw2at7vi" path="res://Assets/Audio/SFX/mimic_bird.mp3" id="5_1e46k"]
+[ext_resource type="AudioStream" uid="uid://cykq2koxyeuoc" path="res://Assets/Audio/SFX/mimic_laugh.mp3" id="6_b752l"]
+[ext_resource type="AudioStream" uid="uid://dkn1mhv505kx0" path="res://Assets/Audio/SFX/mimic_phonering.mp3" id="7_hqp2k"]
+[ext_resource type="AudioStream" uid="uid://bdnrt8u8nf5a0" path="res://Assets/Audio/SFX/mimic_screech.mp3" id="8_ci6vj"]
+[ext_resource type="AudioStream" uid="uid://cdf2uf8otwrke" path="res://Assets/Audio/SFX/waterdrop.mp3" id="9_wukhi"]
+[ext_resource type="Texture2D" uid="uid://dn6mc6js376m0" path="res://Assets/Sprites/Anomalies/mimic.png" id="10_1w40s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r26it"]
+size = Vector2(1.4698755, 9.29461)
+
+[node name="Mimic" type="Area2D" unique_id=365537732]
+script = ExtResource("1_e8kt3")
+sounds = Array[AudioStream]([ExtResource("2_fix8o"), ExtResource("3_n8fjg"), ExtResource("4_vmbj5"), ExtResource("5_1e46k"), ExtResource("6_b752l"), ExtResource("7_hqp2k"), ExtResource("8_ci6vj")])
+beatenSound = ExtResource("9_wukhi")
+timeBetweenNoisesMin = 5.0
+timeBetweenNoisesMax = 7.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=85531973]
+rotation = 3.1415925
+scale = Vector2(167.36115, 18.290169)
+shape = SubResource("RectangleShape2D_r26it")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=485436358]
+scale = Vector2(0.18045054, 0.18045054)
+texture = ExtResource("10_1w40s")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

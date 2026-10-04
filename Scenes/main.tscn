@@ -2,12 +2,15 @@
 
 [ext_resource type="Script" uid="uid://ynqdv4iqgb3d" path="res://Scripts/main.gd" id="1_8gbba"]
 [ext_resource type="PackedScene" uid="uid://cab1eku5yj84e" path="res://Scenes/orderStation.tscn" id="1_jjvhh"]
-[ext_resource type="AudioStream" uid="uid://tlx8v7qewav3" path="res://Assets/Audio/SFX/cashregister.mp3" id="2_fevyy"]
-[ext_resource type="AudioStream" uid="uid://bghiwrhl53nq4" path="res://Assets/Audio/Music/gameplay.ogg" id="3_hibaj"]
+[ext_resource type="Script" uid="uid://y0g2vwvtijvn" path="res://Scripts/Anomalies/anomaly_entry.gd" id="2_b3802"]
+[ext_resource type="PackedScene" uid="uid://cfmwbxlfxcpc2" path="res://Scenes/Anomalies/hiddenOne.tscn" id="3_ee4r6"]
 [ext_resource type="PackedScene" uid="uid://c3t3b5ybj7yq3" path="res://Scenes/cookStation.tscn" id="3_jjvhh"]
 [ext_resource type="Texture2D" uid="uid://cgp62i7q5vhte" path="res://Assets/UI/OrderActive.png" id="4_344ge"]
+[ext_resource type="PackedScene" uid="uid://dag30fcheq62a" path="res://Scenes/Anomalies/mimic.tscn" id="4_gt3je"]
+[ext_resource type="PackedScene" uid="uid://coupsfbiwhj8v" path="res://Scenes/Anomalies/burgerMeat.tscn" id="5_3pmx8"]
 [ext_resource type="Texture2D" uid="uid://cfupxnhyuinui" path="res://Assets/UI/OrderDisabled.png" id="5_ynf5e"]
 [ext_resource type="Script" uid="uid://bn8545m8emaqb" path="res://Scripts/button.gd" id="6_hptm8"]
+[ext_resource type="PackedScene" uid="uid://cjp7xp7sruo6j" path="res://Scenes/Anomalies/baby.tscn" id="6_u50mg"]
 [ext_resource type="Texture2D" uid="uid://c5nw5nwi4ppns" path="res://Assets/UI/GrillActive.png" id="7_d1ilt"]
 [ext_resource type="Texture2D" uid="uid://bwe3mwpi4xwr" path="res://Assets/UI/GrillDisabled.png" id="8_6iyac"]
 [ext_resource type="Texture2D" uid="uid://dxvlccnwsbt88" path="res://Assets/UI/Receipt.png" id="9_6iyac"]
@@ -20,7 +23,40 @@
 [ext_resource type="Texture2D" uid="uid://dexhjjans84i0" path="res://Assets/UI/AwakeBarFilling.png" id="16_fevyy"]
 [ext_resource type="Texture2D" uid="uid://dscrt5fm1wlg2" path="res://Assets/UI/EyeIcon.png" id="17_hibaj"]
 
-[node name="Main" type="Node2D" unique_id=477730885 node_paths=PackedStringArray("order_station", "build_station", "ticket", "awakeness_bar", "money_label", "order_nav_button", "build_nav_button", "vignette", "wipe")]
+[sub_resource type="Resource" id="Resource_b3802"]
+script = ExtResource("2_b3802")
+scene = ExtResource("3_ee4r6")
+type_id = "hidden_one"
+station = "build"
+random_position = true
+unique = false
+attack_damage = 25.0
+metadata/_custom_type_script = "uid://y0g2vwvtijvn"
+
+[sub_resource type="Resource" id="Resource_gdk6b"]
+script = ExtResource("2_b3802")
+scene = ExtResource("4_gt3je")
+type_id = "mimic"
+attack_damage = 0.0
+metadata/_custom_type_script = "uid://y0g2vwvtijvn"
+
+[sub_resource type="Resource" id="Resource_4udgl"]
+script = ExtResource("2_b3802")
+scene = ExtResource("5_3pmx8")
+type_id = "burger_meat"
+station = "build"
+random_position = true
+unique = false
+metadata/_custom_type_script = "uid://y0g2vwvtijvn"
+
+[sub_resource type="Resource" id="Resource_d41hp"]
+script = ExtResource("2_b3802")
+scene = ExtResource("6_u50mg")
+type_id = "baby"
+station = "build"
+metadata/_custom_type_script = "uid://y0g2vwvtijvn"
+
+[node name="Main" type="Node2D" unique_id=477730885 node_paths=PackedStringArray("order_station", "build_station", "ticket", "awakeness_bar", "money_label", "order_nav_button", "build_nav_button", "vignette", "damage_flash", "wipe", "jumpscare_sprite", "order_anomaly_spot", "build_anomaly_spot")]
 script = ExtResource("1_8gbba")
 order_station = NodePath("OrderStation")
 build_station = NodePath("CookStation")
@@ -30,15 +66,21 @@ money_label = NodePath("Money")
 order_nav_button = NodePath("OrderNav")
 build_nav_button = NodePath("CookNav")
 vignette = NodePath("Vignette")
+damage_flash = NodePath("Big Red")
 wipe = NodePath("Screen Wipe")
+jumpscare_sprite = NodePath("aa jumpscare")
 order_time = 60.0
 wipe_time = 0.2
-cha_ching = ExtResource("2_fevyy")
-bgMusic = ExtResource("3_hibaj")
+anomaly_entries = Array[ExtResource("2_b3802")]([SubResource("Resource_b3802"), SubResource("Resource_gdk6b"), SubResource("Resource_4udgl"), SubResource("Resource_d41hp")])
+order_anomaly_spot = NodePath("Mimic Spot")
+build_anomaly_spot = NodePath("Baby Spot")
+random_spawn_margin = 200.0
+random_spawn_area = Rect2(0, 0, 1700, 900)
 
 [node name="OrderStation" parent="." unique_id=70812290 instance=ExtResource("1_jjvhh")]
 
 [node name="CookStation" parent="." unique_id=1362662552 instance=ExtResource("3_jjvhh")]
+visible = false
 
 [node name="Money" type="Label" parent="." unique_id=865817692]
 offset_left = 52.0
@@ -177,6 +219,26 @@ offset_right = 40.0
 offset_bottom = 39.99994
 scale = Vector2(47.81783, 27.518196)
 color = Color(0, 0, 0, 1)
+
+[node name="Big Red" type="ColorRect" parent="." unique_id=1064687421]
+visible = false
+offset_top = -6.1035156e-05
+offset_right = 40.0
+offset_bottom = 39.99994
+scale = Vector2(47.81783, 27.518196)
+color = Color(0.6322437, 0.12718117, 0.079745494, 1)
+
+[node name="Baby Spot" type="Marker2D" parent="." unique_id=2109589798]
+position = Vector2(122, 577)
+
+[node name="Mimic Spot" type="Marker2D" parent="." unique_id=1658726406]
+position = Vector2(154, 852)
+
+[node name="aa jumpscare" type="Sprite2D" parent="." unique_id=1343863547]
+visible = false
+position = Vector2(1003.00006, 557)
+scale = Vector2(0.4728825, 0.48077258)
+texture = ExtResource("9_6iyac")
 
 [connection signal="mouse_entered" from="OrderNav" to="OrderNav" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="OrderNav" to="OrderNav" method="_on_mouse_exited"]

@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://begmrl0b7nijw" path="res://Scripts/Anomalies/hiddenOne.gd" id="1_0ydpp"]
 [ext_resource type="Texture2D" uid="uid://dhlkbmpbruvf6" path="res://Assets/Sprites/Anomalies/HiddenOne/basic1.PNG" id="1_hvpey"]
 [ext_resource type="Texture2D" uid="uid://bk74elb3ksu5d" path="res://Assets/Sprites/Anomalies/HiddenOne/basic2.PNG" id="2_0ydpp"]
+[ext_resource type="Texture2D" uid="uid://dtafgto1orvmj" path="res://Assets/Sprites/Anomalies/HiddenOne/jumpscare_basic.png" id="2_gdk6b"]
+[ext_resource type="AudioStream" uid="uid://x2h8t2pgn04q" path="res://Assets/Audio/SFX/jumpscare2.mp3" id="3_4udgl"]
 [ext_resource type="Texture2D" uid="uid://dyjsto0r4seuy" path="res://Assets/Sprites/Anomalies/HiddenOne/basic3.PNG" id="3_shoxj"]
 [ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/HiddenOne/basic4.PNG" id="4_oybw7"]
 [ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/HiddenOne/basic5.PNG" id="5_gdk6b"]
@@ -45,6 +47,10 @@ animations = [{
 
 [node name="HiddenOne" type="Area2D" unique_id=1927082256]
 script = ExtResource("1_0ydpp")
+scareTexture = ExtResource("2_gdk6b")
+scareSound = ExtResource("3_4udgl")
+timeBeforeFirstAttackMin = 15.0
+timeBeforeFirstAttackMax = 25.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=657838023]
 position = Vector2(-4.5, -1)
@@ -55,7 +61,6 @@ position = Vector2(-2, 0)
 scale = Vector2(0.15731707, 0.15731707)
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-frame_progress = 0.0778301
 
 [node name="SpawnSound" type="AudioStreamPlayer" parent="." unique_id=236641099]
 stream = ExtResource("8_shoxj")

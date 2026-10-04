@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cjp7xp7sruo6j"]
+
+[ext_resource type="Script" uid="uid://17ovvc3c5bj3" path="res://Scripts/Anomalies/baby.gd" id="1_4fita"]
+[ext_resource type="AudioStream" uid="uid://dumodjbu48h7g" path="res://Assets/Audio/SFX/baby_a.mp3" id="2_s83ok"]
+[ext_resource type="AudioStream" uid="uid://ti8jfrh2ftr7" path="res://Assets/Audio/SFX/baby_b.mp3" id="3_61e4k"]
+[ext_resource type="AudioStream" uid="uid://c487n8h3p5qx7" path="res://Assets/Audio/SFX/baby_c.mp3" id="4_gnty4"]
+[ext_resource type="Texture2D" uid="uid://b0pvjy7eky7v6" path="res://Assets/Sprites/Anomalies/rotting_baby.png" id="5_hked3"]
+[ext_resource type="AudioStream" uid="uid://b0tvdufy7dkud" path="res://Assets/Audio/SFX/screech.mp3" id="6_3c2hy"]
+[ext_resource type="Texture2D" uid="uid://cvgvpl23hbl36" path="res://Assets/Sprites/Anomalies/burger_baby.png" id="7_gnty4"]
+[ext_resource type="AudioStream" uid="uid://jay0tg1g07tg" path="res://Assets/Audio/SFX/bird.mp3" id="8_hked3"]
+
+[node name="Baby" type="Node2D" unique_id=946978207]
+script = ExtResource("1_4fita")
+noteSounds = Array[AudioStream]([ExtResource("2_s83ok"), ExtResource("3_61e4k"), ExtResource("4_gnty4")])
+scareTexture = ExtResource("5_hked3")
+scareSound = ExtResource("6_3c2hy")
+scareDamage = 20.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1506534855]
+scale = Vector2(0.16506007, 0.16506007)
+texture = ExtResource("7_gnty4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=836154067]
+stream = ExtResource("8_hked3")
+autoplay = true

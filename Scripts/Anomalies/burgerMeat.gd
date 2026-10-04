@@ -1,6 +1,6 @@
 extends Area2D
-# Faint anomaly you click to banish. Attacks on a timer (once, or repeatedly).
-# Scene: Area2D (this script) -> CollisionShape2D, AnimatedSprite2D ("breath" + "dead"),
+# Build-station anomaly. Drag it onto the grill before the timer runs out, or it attacks.
+# Scene: Area2D (this script) -> CollisionShape2D, AnimatedSprite2D ("idle" + "dead"),
 #        Timer called "AttackTimer", optional AudioStreamPlayer called "SpawnSound".
 
 signal attack   # plain hit: Main deals the entry's attack_damage
@@ -9,22 +9,17 @@ signal jumpscare(texture: Texture2D, sound: AudioStream, damage: float)   # Main
 @export_group("Jumpscare")
 @export var scareTexture: Texture2D   # leave empty for a plain hit (no jumpscare)
 @export var scareSound: AudioStream
-@export var scareDamage: float = 15.0
+@export var scareDamage: float = 20.0
 
-@export_group("Behavior")
-@export var idleOpacity: float = 0.2
-@export var hoverOpacity: float = 0.5
-@export var fadeInDuration: float = 0.6   # in seconds
-
-@export var timeBeforeFirstAttackMin: float = 5   # in seconds
-@export var timeBeforeFirstAttackMax: float = 15   # in seconds
-@export var repeatedAttacks: bool = false
-@export var repeatedAttackCooldown: float = 5   # in seconds
+@export_group("Timing")
+@export var timeBeforeAttack: float = 10   # in seconds
+@export var fadeInDuration: float = 0.5   # in seconds
+@export var grillWaitBeforeFadeout: float = 1   # in seconds
 @export var deadFadeOutDuration: float = 0.5   # in seconds
 
-var hovered: bool = false
+var dragging: bool = false
+var grab_offset: Vector2 = Vector2.ZERO
 var dead: bool = false
-var fade: float = 0.0   # 0 -> 1 on spawn; multiplies the opacity below
 
 @onready var animationNode: AnimatedSprite2D = $AnimatedSprite2D
 @onready var attackTimer: Timer = $AttackTimer
@@ -33,11 +28,11 @@ var fade: float = 0.0   # 0 -> 1 on spawn; multiplies the opacity below
 
 func _ready() -> void:
 	_connect_signals()
-	modulate.a = 0.0
-	animationNode.play("breath")
+	animationNode.play("idle")
 
-	# fade in (_process drives modulate, so the fade goes through the "fade" variable)
-	create_tween().tween_property(self, "fade", 1.0, fadeInDuration)
+	# fade in
+	modulate.a = 0.0
+	create_tween().tween_property(self, "modulate:a", 1.0, fadeInDuration)
 
 	# spawn noise (skipped if the scene has no SpawnSound node)
 	if spawnSound:
@@ -45,17 +40,13 @@ func _ready() -> void:
 			spawnSound.bus = "SFX"
 		spawnSound.play()
 
-	attackTimer.start(randf_range(timeBeforeFirstAttackMin, timeBeforeFirstAttackMax))
+	attackTimer.start(timeBeforeAttack)
 
 
 # connects in code, so it works whether or not you connected them in the editor
 func _connect_signals() -> void:
 	if not input_event.is_connected(_on_input_event):
 		input_event.connect(_on_input_event)
-	if not mouse_entered.is_connected(_on_mouse_entered):
-		mouse_entered.connect(_on_mouse_entered)
-	if not mouse_exited.is_connected(_on_mouse_exited):
-		mouse_exited.connect(_on_mouse_exited)
 	if not attackTimer.timeout.is_connected(_on_attack_timer_timeout):
 		attackTimer.timeout.connect(_on_attack_timer_timeout)
 
@@ -65,44 +56,58 @@ func die(play_death_animation: bool = true) -> void:
 		return
 
 	dead = true
+	dragging = false
 	attackTimer.stop()
 	if play_death_animation:
 		animationNode.play("dead")
+		await get_tree().create_timer(grillWaitBeforeFadeout).timeout
 	var deadTween = create_tween()
 	deadTween.tween_property(self, "modulate:a", 0.0, deadFadeOutDuration)
 	await deadTween.finished
 	queue_free()
 
 
+func _grill_check() -> bool:
+	for area in get_overlapping_areas():
+		if area.is_in_group(&"Grill_Zone"):
+			return true
+	return false
+
+
 func _process(_delta: float) -> void:
-	if dead:
+	if dead or not dragging:
 		return
-	modulate.a = (hoverOpacity if hovered else idleOpacity) * fade
-
-
-func _on_mouse_entered() -> void:
-	hovered = true
-
-
-func _on_mouse_exited() -> void:
-	hovered = false
+	if not is_visible_in_tree():   # station got hidden mid-drag
+		dragging = false
+		return
+	global_position = get_global_mouse_position() + grab_offset
+	global_position = global_position.clamp(Vector2.ZERO, get_viewport_rect().size)
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	# a hidden station's anomaly must not react to clicks
+	# a hidden station's patty must not react to clicks
 	if dead or not is_visible_in_tree():
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		die()
+		dragging = true
+		grab_offset = global_position - get_global_mouse_position()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		# only react if THIS patty was being dragged, otherwise any click
+		# anywhere would kill it while it sits on the grill
+		if not dragging:
+			return
+		dragging = false
+		if not dead and _grill_check():
+			die()
 
 
 func _on_attack_timer_timeout() -> void:
 	if not dead:
 		_attack()
-		if repeatedAttacks:
-			attackTimer.start(repeatedAttackCooldown)
-		else:
-			die(false)
+		die(false)
 
 
 # jumpscare if a texture is set, otherwise a plain hit (never both, so no double damage)
