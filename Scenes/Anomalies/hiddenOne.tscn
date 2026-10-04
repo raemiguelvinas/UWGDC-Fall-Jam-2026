@@ -52,3 +52,8 @@ shape = SubResource("RectangleShape2D_f5nti")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1431091116]
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
+frame = 4
+frame_progress = 1.0
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
