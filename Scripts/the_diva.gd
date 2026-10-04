@@ -10,7 +10,7 @@ signal attacked
 @export_range(0.1, 30.0) var fade_time: float = 2.0
 
 # seconds before anomaly disappears safely CAN EDIT THIS
-@export_range(0.1, 60.0) var lifetime: float = 10.0
+@export_range(0.1, 60.0) var lifetime: float = 5.0
 
 @onready var visual: TextureRect = $Visual
 

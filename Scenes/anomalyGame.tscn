@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://dci4qmvs08lbt"]
-
-[ext_resource type="Script" uid="uid://1y2oiq5tierm" path="res://Scenes/anomaly_game.gd" id="1_hrm21"]
-
-[node name="AnomalyGame" type="Node2D" unique_id=1226204392]
-script = ExtResource("1_hrm21")
