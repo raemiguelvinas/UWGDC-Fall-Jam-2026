@@ -7,7 +7,7 @@ var targ_scale: Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	min_scale = scale
-	max_scale = scale * 1.1
+	max_scale = scale * 1.05
 	targ_scale = min_scale
 
 
