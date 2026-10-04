@@ -29,9 +29,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("4_oybw7")
 }],
-"loop": 0,
+"loop": 1,
 "name": &"breath",
-"speed": 4.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -55,12 +55,9 @@ position = Vector2(-2, 0)
 scale = Vector2(0.15731707, 0.15731707)
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-
-[node name="BreathingTimer" type="Timer" parent="." unique_id=2100504312]
-one_shot = true
+frame_progress = 0.14596328
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="timeout" from="BreathingTimer" to="." method="_on_breathing_timer_timeout"]

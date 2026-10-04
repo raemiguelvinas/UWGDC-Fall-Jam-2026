@@ -1,29 +1,17 @@
 extends Area2D
 
-@export var initialOpacity: float = 0.0
-@export var finalOpacity: float = 0.9
-@export var hoverOpacity: float = 0.3
-@export var duration: int = 30 # in seconds
+@export var idleOpacity: float = 0.2
+@export var hoverOpacity: float = 0.5
 
-var opacityTween: Tween
-var opacityFromTween: float
 var hovered: bool = false
 
-@export var breathingCooldownMin: float = 1
-@export var breathingCooldownMax: float = 5
-
 @onready var animationNode: AnimatedSprite2D = $AnimatedSprite2D
-@onready var breathingTimer: Timer = $BreathingTimer
 
 var dead: bool = false
-@export var deadFadeOutDuration: int = 1 # in seconds
-
-func start_breathing_cooldown() -> void:
-	breathingTimer.start(randf_range(breathingCooldownMin, breathingCooldownMax))
+@export var deadFadeOutDuration: float = 0.5 # in seconds
 
 func die() -> void:
 	dead = true
-	opacityTween.kill()
 	animationNode.play("dead")
 	var deadTween = create_tween()
 	deadTween.tween_property(self, "modulate:a", 0, deadFadeOutDuration)
@@ -32,26 +20,22 @@ func die() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	modulate.a = initialOpacity
-	opacityFromTween = initialOpacity
-	opacityTween = create_tween()
-	opacityTween.tween_property(self, "opacityFromTween", finalOpacity, duration)
+	modulate.a = idleOpacity
 	
 	# TO-DO: Play sound when after spawn in
 	
-	start_breathing_cooldown()
+	animationNode.play("breath")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if not dead:
 		if hovered:
-			modulate.a = min(opacityFromTween + hoverOpacity, finalOpacity) if modulate.a > hoverOpacity else hoverOpacity
+			modulate.a = hoverOpacity
 		else:
-			modulate.a = opacityFromTween
+			modulate.a = idleOpacity
 	
 	# TO-DO: Attacks if left alone for too long (does automatically die, or continues attacking after cooldown)?
-	# TO-DO Chnage breathing to looping animation
 
 
 func _on_mouse_entered() -> void:
@@ -60,16 +44,6 @@ func _on_mouse_entered() -> void:
 
 func _on_mouse_exited() -> void:
 	hovered = false
-
-func _on_breathing_timer_timeout() -> void:
-	if not dead:
-		animationNode.play("breath")
-
-
-func _on_animated_sprite_2d_animation_finished() -> void:
-	if animationNode.animation == &"breath":
-		animationNode.frame = 0
-		start_breathing_cooldown()
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
