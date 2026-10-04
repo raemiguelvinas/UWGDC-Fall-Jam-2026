@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/HiddenOne/basic4.PNG" id="4_oybw7"]
 [ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/HiddenOne/basic5.PNG" id="5_gdk6b"]
 [ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/HiddenOne/basic_dead.PNG" id="6_4udgl"]
-[ext_resource type="AudioStream" uid="uid://jn5y74yinh5" path="res://Assets/Sounds/baby_b.mp3" id="8_shoxj"]
+[ext_resource type="AudioStream" uid="uid://drf3t7cdjl3dg" path="res://Assets/Sounds/screech.mp3" id="8_shoxj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f5nti"]
 size = Vector2(193, 242)
