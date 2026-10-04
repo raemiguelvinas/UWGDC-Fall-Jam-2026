@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://bu50ydmfhmqh0"]
+
+[ext_resource type="Script" uid="uid://buw5xj20b6qxk" path="res://Scripts/shy_one.gd" id="1_n2shj"]
+[ext_resource type="Texture2D" uid="uid://wh16dhn3s3xg" path="res://Assets/Sprites/Shy_idle.PNG" id="2_cjgku"]
+[ext_resource type="Texture2D" uid="uid://un01uqeki2x8" path="res://Assets/Sprites/shy_jumpscare_1.PNG" id="3_ytcxh"]
+[ext_resource type="Texture2D" uid="uid://bfrklnwns3880" path="res://Assets/Sprites/shy_jumpscare_2.PNG" id="4_wtuvr"]
+[ext_resource type="Texture2D" uid="uid://cvmiomjidl7px" path="res://Assets/Sprites/shy_jumpscare_3.PNG" id="5_v7h2f"]
+[ext_resource type="Texture2D" uid="uid://brmhwc8a3xyql" path="res://Assets/Sprites/shy_jumpscare_4.PNG" id="6_580c8"]
+[ext_resource type="AudioStream" uid="uid://biabmoydji6ee" path="res://Assets/jumpscare2.mp3" id="7_wtuvr"]
+[ext_resource type="AudioStream" uid="uid://ce67m1uqqjmci" path="res://Assets/bird.mp3" id="8_v7h2f"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5kisf"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": ExtResource("3_ytcxh")
+}, {
+"duration": 0.5,
+"texture": ExtResource("4_wtuvr")
+}, {
+"duration": 0.5,
+"texture": ExtResource("5_v7h2f")
+}, {
+"duration": 0.5,
+"texture": ExtResource("6_580c8")
+}, {
+"duration": 0.5,
+"texture": ExtResource("3_ytcxh")
+}, {
+"duration": 0.5,
+"texture": ExtResource("4_wtuvr")
+}, {
+"duration": 0.5,
+"texture": ExtResource("5_v7h2f")
+}, {
+"duration": 0.5,
+"texture": ExtResource("6_580c8")
+}],
+"loop": 0,
+"name": &"Jumpscare",
+"speed": 5.0
+}]
+
+[node name="ShyOne" type="Control" unique_id=1325992827]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1670.0
+offset_bottom = -830.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n2shj")
+
+[node name="Visual" type="TextureRect" parent="." unique_id=564293417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_cjgku")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Jumpscare Layer" type="CanvasLayer" parent="." unique_id=56046229]
+
+[node name="Jumpscare" type="AnimatedSprite2D" parent="Jumpscare Layer" unique_id=639869291]
+position = Vector2(987.87506, 554.125)
+scale = Vector2(0.6611281, 0.6611281)
+sprite_frames = SubResource("SpriteFrames_5kisf")
+animation = &"Jumpscare"
+frame = 7
+frame_progress = 1.0
+
+[node name="JumpscareAudio" type="AudioStreamPlayer" parent="." unique_id=1531501358]
+stream = ExtResource("7_wtuvr")
+
+[node name="SpawnSound" type="AudioStreamPlayer" parent="." unique_id=1266036455]
+stream = ExtResource("8_v7h2f")
