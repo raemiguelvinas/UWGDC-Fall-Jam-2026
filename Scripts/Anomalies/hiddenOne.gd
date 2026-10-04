@@ -1,21 +1,33 @@
 extends Area2D
 
+signal attack
+
 @export var idleOpacity: float = 0.2
 @export var hoverOpacity: float = 0.5
 
 var hovered: bool = false
 
+@export var timeBeforeFirstAttack: float = 10   # in seconds
+@export var repeatedAttacks: bool = false
+@export var repeatedAttackCooldown: float = 5   # in seconds
+
 @onready var animationNode: AnimatedSprite2D = $AnimatedSprite2D
 @onready var spawnSound: AudioStreamPlayer = $SpawnSound
+@onready var attackTimer: Timer = $AttackTimer
 
 var dead: bool = false
 @export var deadFadeOutDuration: float = 0.5 # in seconds
 
-func die() -> void:
+func die(play_death_animation: bool = true) -> void:
+	if dead:
+		return
+	
 	dead = true
-	animationNode.play("dead")
+	attackTimer.stop()
+	if play_death_animation:
+		animationNode.play("dead")
 	var deadTween = create_tween()
-	deadTween.tween_property(self, "modulate:a", 0, deadFadeOutDuration)
+	deadTween.tween_property(self, "modulate:a", 0.0, deadFadeOutDuration)
 	await deadTween.finished
 	queue_free()
 
@@ -24,17 +36,17 @@ func _ready() -> void:
 	modulate.a = idleOpacity
 	animationNode.play("breath")
 	spawnSound.play()
+	
+	attackTimer.start(timeBeforeFirstAttack)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if not dead:
 		if hovered:
 			modulate.a = hoverOpacity
 		else:
 			modulate.a = idleOpacity
-	
-	# TO-DO: Attacks if left alone for too long (does automatically die, or continues attacking after cooldown)?
 
 
 func _on_mouse_entered() -> void:
@@ -48,5 +60,15 @@ func _on_mouse_exited() -> void:
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if dead:
 		return
+	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		die()
+
+
+func _on_attack_timer_timeout() -> void:
+	if not dead:
+		attack.emit()
+		if repeatedAttacks:
+			attackTimer.start(repeatedAttackCooldown)
+		else:
+			die(false)

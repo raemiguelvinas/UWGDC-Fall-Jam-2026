@@ -56,12 +56,15 @@ position = Vector2(-2, 0)
 scale = Vector2(0.15731707, 0.15731707)
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-frame_progress = 0.024596652
+frame_progress = 0.40632758
 
 [node name="SpawnSound" type="AudioStreamPlayer" parent="." unique_id=236641099]
 stream = ExtResource("8_shoxj")
 
+[node name="AttackTimer" type="Timer" parent="." unique_id=511953187]
+one_shot = true
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
