@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://coupsfbiwhj8v"]
+
+[ext_resource type="Script" uid="uid://cn2don1rhugl2" path="res://burgerMeat.gd" id="1_algsm"]
+[ext_resource type="Texture2D" uid="uid://oemlvnwvjy7u" path="res://Assets/Sprites/Anomalies/BurgerMeat/burnt_burger.png" id="2_rjc5t"]
+[ext_resource type="Texture2D" uid="uid://bx8f3idfcotxd" path="res://Assets/Sprites/Anomalies/BurgerMeat/idle_burger.png" id="3_akbs4"]
+[ext_resource type="AudioStream" uid="uid://cs1a0vw81mrmu" path="res://Assets/Sounds/laugh.mp3" id="4_rjc5t"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jf4n2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rjc5t")
+}],
+"loop": 1,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_akbs4")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jf4n2"]
+size = Vector2(165, 157)
+
+[node name="BurgerMeat" type="Area2D" unique_id=565560971]
+script = ExtResource("1_algsm")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1964197859]
+scale = Vector2(0.1487805, 0.1487805)
+sprite_frames = SubResource("SpriteFrames_jf4n2")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=688456697]
+position = Vector2(-3.5, -9.5)
+shape = SubResource("RectangleShape2D_jf4n2")
+
+[node name="AttackTimer" type="Timer" parent="." unique_id=1847169217]
+
+[node name="SpawnSound" type="AudioStreamPlayer" parent="." unique_id=14404909]
+stream = ExtResource("4_rjc5t")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
