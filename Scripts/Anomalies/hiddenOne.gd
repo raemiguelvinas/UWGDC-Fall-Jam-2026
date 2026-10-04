@@ -7,7 +7,8 @@ signal attack
 
 var hovered: bool = false
 
-@export var timeBeforeFirstAttack: float = 10   # in seconds
+@export var timeBeforeFirstAttackMin: float = 5   # in seconds
+@export var timeBeforeFirstAttackMax: float = 15   # in seconds
 @export var repeatedAttacks: bool = false
 @export var repeatedAttackCooldown: float = 5   # in seconds
 
@@ -16,7 +17,7 @@ var hovered: bool = false
 @onready var attackTimer: Timer = $AttackTimer
 
 var dead: bool = false
-@export var deadFadeOutDuration: float = 0.5 # in seconds
+@export var deadFadeOutDuration: float = 0.5   # in seconds
 
 func die(play_death_animation: bool = true) -> void:
 	if dead:
@@ -37,6 +38,7 @@ func _ready() -> void:
 	animationNode.play("breath")
 	spawnSound.play()
 	
+	var timeBeforeFirstAttack: float = randf_range(timeBeforeFirstAttackMin, timeBeforeFirstAttackMax)
 	attackTimer.start(timeBeforeFirstAttack)
 
 
