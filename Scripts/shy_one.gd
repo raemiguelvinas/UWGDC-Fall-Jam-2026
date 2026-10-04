@@ -46,7 +46,7 @@ func _ready() -> void:
 	jumpscare.hide()
 	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# delta is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if resolved:
 		return
@@ -114,7 +114,7 @@ func _finish(did_attack: bool) -> void:
 		print("PLAYER SUCESS - lifetime expired")
 	queue_free()
 	
-func _randomize_position() -> void:
+func _randomize_position() -> void: # randomizer literally just picks a random spot on the screen where the max margin is whatever size the screen is.
 	var screen_size: Vector2 = get_viewport_rect().size
 	var margin: float = 20.0
 

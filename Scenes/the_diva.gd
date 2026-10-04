@@ -42,7 +42,7 @@ func _ready() -> void:
 
 	print("Diva spawned clicks needed: ", clicks_required)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if resolved:
 		return
