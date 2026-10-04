@@ -1,3 +1,187 @@
 [gd_scene format=3 uid="uid://c3t3b5ybj7yq3"]
 
-[node name="CookStation" type="Node2D" unique_id=1362662552]
+[ext_resource type="Texture2D" uid="uid://dh1wtyemda0b4" path="res://Assets/Backgrounds/kitchen_comp.PNG" id="1_4capr"]
+[ext_resource type="Script" uid="uid://5li3neoyvick" path="res://Scripts/cook_station.gd" id="1_okgfp"]
+[ext_resource type="Texture2D" uid="uid://dculet36jmy6i" path="res://Assets/placeholder.jpg" id="2_anf2h"]
+[ext_resource type="Texture2D" uid="uid://cuyuel67mk5hu" path="res://Assets/Sprites/Objects/bun_bottom.png" id="2_cyteg"]
+[ext_resource type="Texture2D" uid="uid://blwj5lnvo2np6" path="res://Assets/Sprites/Objects/bun_top.png" id="3_uf51i"]
+[ext_resource type="Script" uid="uid://bn8545m8emaqb" path="res://Scripts/button.gd" id="3_yw3og"]
+[ext_resource type="Texture2D" uid="uid://crlhtmgr57m26" path="res://Assets/Sprites/Objects/patty_raw.png" id="4_sj2fg"]
+[ext_resource type="Texture2D" uid="uid://f1cehs6hgetj" path="res://Assets/Sprites/Objects/cheese.png" id="5_iymo5"]
+[ext_resource type="Script" uid="uid://cfkpdbqu65erf" path="res://Scripts/patty.gd" id="5_okgfp"]
+[ext_resource type="Texture2D" uid="uid://cwfj37cd0tkla" path="res://Assets/Sprites/Objects/patty_cooked.png" id="6_buoyn"]
+[ext_resource type="Texture2D" uid="uid://c5gsyhfekmjjy" path="res://Assets/Sprites/Objects/tomato.png" id="6_rthom"]
+[ext_resource type="Texture2D" uid="uid://da8fyatdd7c12" path="res://Assets/Sprites/Objects/lettuce.png" id="7_7m6vh"]
+[ext_resource type="Texture2D" uid="uid://cxkqfef2s7l2n" path="res://Assets/Sprites/Objects/patty_burnt.png" id="7_eo7q3"]
+[ext_resource type="Texture2D" uid="uid://66isiv68uv4e" path="res://Assets/Sprites/Objects/patty_very_burnt.png" id="8_2ms5u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r26it"]
+size = Vector2(21.351257, 798.96094)
+
+[node name="CookStation" type="Node2D" unique_id=1362662552 node_paths=PackedStringArray("patty", "stack", "grill_spot", "side_spot", "start_cook_button", "restart_button", "finish_cook_button", "finish_order_button", "reset_burger_button", "cheese_button", "tomato_button", "lettuce_button")]
+script = ExtResource("1_okgfp")
+patty = NodePath("Patty")
+stack = NodePath("Burger Stack")
+grill_spot = NodePath("Grill Spot")
+side_spot = NodePath("Side Spot")
+start_cook_button = NodePath("Cooking Buttons/Cook Button")
+restart_button = NodePath("Cooking Buttons/Restart Button")
+finish_cook_button = NodePath("Cooking Buttons/Finish Button")
+finish_order_button = NodePath("Building Buttons/Finish Order Button")
+reset_burger_button = NodePath("Building Buttons/Restart Build Button")
+cheese_button = NodePath("Building Buttons/Cheese Button")
+tomato_button = NodePath("Building Buttons/Tomato Button")
+lettuce_button = NodePath("Building Buttons/Lettuce Button")
+bottom_bun = ExtResource("2_cyteg")
+top_bun = ExtResource("3_uf51i")
+ingredient_textures = Array[Texture2D]([ExtResource("6_buoyn"), ExtResource("5_iymo5"), ExtResource("6_rthom"), ExtResource("7_7m6vh")])
+layer_height = 120.0
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1272429898]
+scale = Vector2(0.8000001, 0.8000001)
+texture = ExtResource("1_4capr")
+centered = false
+
+[node name="Grill Spot" type="Marker2D" parent="." unique_id=1345893340]
+position = Vector2(440, 584)
+
+[node name="Side Spot" type="Marker2D" parent="." unique_id=1270496449]
+position = Vector2(797, 584)
+
+[node name="Patty" type="Area2D" parent="." unique_id=183818045 node_paths=PackedStringArray("pattySprite")]
+position = Vector2(441, 582)
+scale = Vector2(0.13016912, 0.13016912)
+script = ExtResource("5_okgfp")
+rawTexture = ExtResource("4_sj2fg")
+cookedTexture = ExtResource("6_buoyn")
+burntTexture = ExtResource("7_eo7q3")
+superBurntTexture = ExtResource("8_2ms5u")
+hopHeight = 500.0
+pattySprite = NodePath("Patty Sprite")
+
+[node name="Patty Sprite" type="Sprite2D" parent="Patty" unique_id=533707113]
+texture = ExtResource("4_sj2fg")
+
+[node name="Patty Collision Box" type="CollisionShape2D" parent="Patty" unique_id=1943539081]
+scale = Vector2(78.739975, 1)
+shape = SubResource("RectangleShape2D_r26it")
+
+[node name="Burger Stack" type="Node2D" parent="." unique_id=422073085]
+position = Vector2(1235, 579)
+scale = Vector2(0.15, 0.15)
+
+[node name="Cooking Buttons" type="Node2D" parent="." unique_id=1875866867]
+
+[node name="Cook Button" type="TextureButton" parent="Cooking Buttons" unique_id=1496816096]
+offset_left = 266.99997
+offset_top = 173.0
+offset_right = 622.2239
+offset_bottom = 292.0
+scale = Vector2(0.70369834, 0.70369834)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_yw3og")
+
+[node name="Restart Button" type="TextureButton" parent="Cooking Buttons" unique_id=1040476652]
+offset_left = 522.99994
+offset_top = 236.0
+offset_right = 878.2238
+offset_bottom = 355.0
+scale = Vector2(0.70369834, 0.70369834)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_yw3og")
+
+[node name="Finish Button" type="TextureButton" parent="Cooking Buttons" unique_id=1771358282]
+offset_left = 9.000061
+offset_top = 236.0
+offset_right = 364.22394
+offset_bottom = 355.0
+scale = Vector2(0.70369834, 0.70369834)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_yw3og")
+
+[node name="Building Buttons" type="Node2D" parent="." unique_id=623329800]
+
+[node name="Finish Order Button" type="TextureButton" parent="Building Buttons" unique_id=1715874607]
+offset_left = 1287.3732
+offset_top = 113.370056
+offset_right = 1642.597
+offset_bottom = 232.37006
+scale = Vector2(0.70369834, 0.70369834)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_yw3og")
+
+[node name="Cheese Button" type="TextureButton" parent="Building Buttons" unique_id=1712423189]
+offset_left = 1283.0
+offset_top = 525.00006
+offset_right = 1638.2239
+offset_bottom = 644.00006
+scale = Vector2(0.36464518, 1.0972884)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Lettuce Button" type="TextureButton" parent="Building Buttons" unique_id=49494638]
+offset_left = 1441.0
+offset_top = 528.99994
+offset_right = 1796.2239
+offset_bottom = 647.99994
+rotation = -0.75572604
+scale = Vector2(0.24464518, 1.0972884)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Tomato Button" type="TextureButton" parent="Building Buttons" unique_id=276786749]
+offset_left = 1570.0001
+offset_top = 535.00006
+offset_right = 1925.224
+offset_bottom = 654.00006
+rotation = -0.75572604
+scale = Vector2(0.24464518, 1.0972884)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Restart Build Button" type="TextureButton" parent="Building Buttons" unique_id=116095149]
+offset_left = 1289.0
+offset_top = 229.0
+offset_right = 1644.2239
+offset_bottom = 348.0
+scale = Vector2(0.70369834, 0.70369834)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture_normal = ExtResource("2_anf2h")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("3_yw3og")
+
+[connection signal="mouse_entered" from="Cooking Buttons/Cook Button" to="Cooking Buttons/Cook Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Cooking Buttons/Cook Button" to="Cooking Buttons/Cook Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Cooking Buttons/Restart Button" to="Cooking Buttons/Restart Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Cooking Buttons/Restart Button" to="Cooking Buttons/Restart Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Cooking Buttons/Finish Button" to="Cooking Buttons/Finish Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Cooking Buttons/Finish Button" to="Cooking Buttons/Finish Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Building Buttons/Finish Order Button" to="Building Buttons/Finish Order Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Building Buttons/Finish Order Button" to="Building Buttons/Finish Order Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Building Buttons/Cheese Button" to="Building Buttons/Cheese Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Building Buttons/Cheese Button" to="Building Buttons/Cheese Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Building Buttons/Lettuce Button" to="Building Buttons/Lettuce Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Building Buttons/Lettuce Button" to="Building Buttons/Lettuce Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Building Buttons/Tomato Button" to="Building Buttons/Tomato Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Building Buttons/Tomato Button" to="Building Buttons/Tomato Button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Building Buttons/Restart Build Button" to="Building Buttons/Restart Build Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Building Buttons/Restart Build Button" to="Building Buttons/Restart Build Button" method="_on_mouse_exited"]
