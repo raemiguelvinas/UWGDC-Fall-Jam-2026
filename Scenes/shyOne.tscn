@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bu50ydmfhmqh0"]
+
+[ext_resource type="Script" uid="uid://buw5xj20b6qxk" path="res://Scenes/shy_one.gd" id="1_n2shj"]
+
+[node name="ShyOne" type="Control" unique_id=1325992827]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1760.0
+offset_bottom = -920.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n2shj")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1780278913]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
