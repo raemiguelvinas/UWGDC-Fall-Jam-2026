@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://chkx02vl8i6i1" path="res://Assets/Sprites/Anomalies/HiddenOne/basic4.PNG" id="4_oybw7"]
 [ext_resource type="Texture2D" uid="uid://c5q5r4qm0wq3t" path="res://Assets/Sprites/Anomalies/HiddenOne/basic5.PNG" id="5_gdk6b"]
 [ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/HiddenOne/basic_dead.PNG" id="6_4udgl"]
+[ext_resource type="AudioStream" uid="uid://jn5y74yinh5" path="res://Assets/Sounds/baby_b.mp3" id="8_shoxj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f5nti"]
 size = Vector2(193, 242)
@@ -55,7 +56,10 @@ position = Vector2(-2, 0)
 scale = Vector2(0.15731707, 0.15731707)
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-frame_progress = 0.14596328
+frame_progress = 0.024596652
+
+[node name="SpawnSound" type="AudioStreamPlayer" parent="." unique_id=236641099]
+stream = ExtResource("8_shoxj")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

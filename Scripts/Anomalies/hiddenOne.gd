@@ -6,6 +6,7 @@ extends Area2D
 var hovered: bool = false
 
 @onready var animationNode: AnimatedSprite2D = $AnimatedSprite2D
+@onready var spawnSound: AudioStreamPlayer = $SpawnSound
 
 var dead: bool = false
 @export var deadFadeOutDuration: float = 0.5 # in seconds
@@ -21,10 +22,8 @@ func die() -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	modulate.a = idleOpacity
-	
-	# TO-DO: Play sound when after spawn in
-	
 	animationNode.play("breath")
+	spawnSound.play()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
