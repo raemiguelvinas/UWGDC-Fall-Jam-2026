@@ -29,6 +29,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r26it"]
 size = Vector2(21.351257, 798.96094)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jf4n2"]
+size = Vector2(884, 110)
+
 [node name="CookStation" type="Node2D" unique_id=1362662552 node_paths=PackedStringArray("patty", "stack", "grill_spot", "side_spot", "start_cook_button", "restart_button", "finish_cook_button", "finish_order_button", "reset_burger_button", "cheese_button", "tomato_button", "lettuce_button")]
 script = ExtResource("1_okgfp")
 patty = NodePath("Patty")
@@ -251,6 +254,12 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture_normal = ExtResource("2_anf2h")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="Grill Zone" type="Area2D" parent="." unique_id=622423447 groups=["Grill_Zone"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grill Zone" unique_id=1549723365 groups=["Grill_Zone"]]
+position = Vector2(456, 597)
+shape = SubResource("RectangleShape2D_jf4n2")
 
 [connection signal="mouse_entered" from="Cooking Buttons/Cook Button" to="Cooking Buttons/Cook Button" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Cooking Buttons/Cook Button" to="Cooking Buttons/Cook Button" method="_on_mouse_exited"]
