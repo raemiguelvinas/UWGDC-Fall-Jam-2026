@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://b187urln20efe" path="res://Assets/Sprites/idle_diva.png" id="2_efb7q"]
 [ext_resource type="Texture2D" uid="uid://un01uqeki2x8" path="res://Assets/Sprites/shy_jumpscare_1.PNG" id="3_u50jx"]
 [ext_resource type="Texture2D" uid="uid://blmbi5a2fx3wx" path="res://Assets/Sprites/clicked_diva.png" id="3_un7cl"]
-[ext_resource type="Texture2D" uid="uid://wh16dhn3s3xg" path="res://Assets/Sprites/Shy_idle.PNG" id="4_bhon6"]
 [ext_resource type="Texture2D" uid="uid://bfrklnwns3880" path="res://Assets/Sprites/shy_jumpscare_2.PNG" id="4_un7cl"]
 [ext_resource type="Texture2D" uid="uid://cvmiomjidl7px" path="res://Assets/Sprites/shy_jumpscare_3.PNG" id="5_bhon6"]
 [ext_resource type="Texture2D" uid="uid://brmhwc8a3xyql" path="res://Assets/Sprites/shy_jumpscare_4.PNG" id="6_3h56l"]
@@ -64,7 +63,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_bhon6")
+texture = ExtResource("2_efb7q")
 expand_mode = 1
 stretch_mode = 5
 

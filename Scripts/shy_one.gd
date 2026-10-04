@@ -33,6 +33,7 @@ var resolved : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	_randomize_position()
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -60,7 +61,7 @@ func _process(delta: float) -> void:
 	else:
 		opacity -= delta/fade_time
 	
-	opacity = clamp(opacity, 0.0, 1.0) #change these parameters for min, max opacity
+	opacity = clamp(opacity, 0.1, 1.0) #change these parameters for min, max opacity
 	_update_visual()
 	
 	if opacity >= 1.0: #finishes the anamoly if opacity is maxed out
@@ -111,6 +112,16 @@ func _finish(did_attack: bool) -> void:
 	else:
 		defeated.emit()
 		print("PLAYER SUCESS - lifetime expired")
-
-
 	queue_free()
+	
+func _randomize_position() -> void:
+	var screen_size: Vector2 = get_viewport_rect().size
+	var margin: float = 20.0
+
+	var max_x: float = max(margin, screen_size.x - size.x - margin)
+	var max_y: float = max(margin, screen_size.y - size.y - margin)
+
+	global_position = Vector2(
+		randf_range(margin, max_x),
+		randf_range(margin, max_y)
+	)
