@@ -9,11 +9,14 @@
 [ext_resource type="Texture2D" uid="uid://cnnqkqil56ltr" path="res://Assets/Sprites/Anomalies/HiddenOne/basic_dead.PNG" id="6_4udgl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f5nti"]
-size = Vector2(1217.5, 1554)
+size = Vector2(375, 468)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_f5nti"]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_gdk6b")
+}, {
 "duration": 1.0,
 "texture": ExtResource("1_hvpey")
 }, {
@@ -25,9 +28,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_oybw7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_gdk6b")
 }],
 "loop": 0,
 "name": &"breath",
@@ -43,17 +43,23 @@ animations = [{
 }]
 
 [node name="HiddenOne" type="Area2D" unique_id=1927082256]
+position = Vector2(1014, 510)
 script = ExtResource("1_0ydpp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=657838023]
-position = Vector2(-18.75, 4)
+position = Vector2(-5.5, 1)
 shape = SubResource("RectangleShape2D_f5nti")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1431091116]
+position = Vector2(-3.000122, -0.99993896)
+scale = Vector2(0.3042683, 0.3042683)
 sprite_frames = SubResource("SpriteFrames_f5nti")
 animation = &"breath"
-frame = 4
-frame_progress = 1.0
+
+[node name="BreathingTimer" type="Timer" parent="." unique_id=2100504312]
+one_shot = true
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="timeout" from="BreathingTimer" to="." method="_on_breathing_timer_timeout"]
